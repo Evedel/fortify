@@ -1,0 +1,8 @@
+
+\say "This Is Print For Fortran And LaTeX"
+
+! \say "This Print Is Only For Fortran"
+
+# \say "But This Is Only For LaTeX"
+
+! # \say "And No One Will See This One"
