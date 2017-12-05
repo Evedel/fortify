@@ -2,13 +2,14 @@ Main idea -- write math, not code.
 Latex format.
 Compiled in pdf and fortran.
 
+https://en.wikibooks.org/wiki/LaTeX/Algorithms
+
 `var` set of variables (definition)
 array assignment `= []`
 array read through `A_{i,j,k}`
 `\Function` == internal functions (Latex or ff)
 `! Expression` == compile in fortran, but not in latex
 `# Expression` == comment
-
 
 Program :=
   1)  `EOF`

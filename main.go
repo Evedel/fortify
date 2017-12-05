@@ -7,14 +7,19 @@ import (
 	"strings"
 	"io/ioutil"
 
+	"say"
+	"lexer"
 	"compile"
 )
 
 func main() {
+	say.Init("3")
+
 	source := ""
 	flag.Parse()
 	tailInput := flag.Args()
-	fmt.Println("-> Input File: ", tailInput)
+	say.L1(" Input File: ", tailInput, "\n")
+
 	if len(tailInput) == 1 {
 		sourceInputFull := tailInput[0]
 		sourceName := [3]string{ sourceInputFull,
@@ -52,9 +57,9 @@ func main() {
         // default from definition
 			}
 		}
-		fmt.Print("-> Working Directory: ", sourceName, "\n")
+		say.L1(" Working Directory: ", sourceName, "\n")
 		if _, err := os.Stat(sourceInputFull); os.IsNotExist(err) {
-			fmt.Printf("File %s doesn't exist.\n", sourceName)
+			say.L3(" File doesn't exist:", sourceName, "\n")
 		} else {
 			err := os.Mkdir(sourceName[2] + "/" + sourceName[0], 0744)
 			if (err == nil) || (os.IsExist(err)) {
@@ -63,11 +68,13 @@ func main() {
 				} else {
 					source = source + string(b)
 				}
+				tokenisedForm := lexer.Tokenise(source)
+				say.L1("Tokenised ", tokenisedForm, "\n")
 				compile.LaTeX(source, sourceName)
 			} else {
-				fmt.Print("-> Error: ", err, "\n")
+				say.L3(" Error:",  err, "\n")
 			}
 		}
 	}
-	fmt.Printf("-> Done\n")
+	say.L1(" Done. ", "", "\n")
 }

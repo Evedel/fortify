@@ -31,7 +31,7 @@ func LaTeX(source string, name [3]string) {
     strsc = strings.Replace(strsc, ch, "\\" + string(ch), -1)
   }
   for _, ch := range UnMirrorred {
-    strsc = strings.Replace(strsc, ch, ch[1:], -1)
+    strsc = strings.Replace(strsc, ch, "\\text{" + ch[1:] + "}", -1)
   }
   strsc = "& " + strsc + "\n"
   strsc = "\\documentclass[12pt]{article} \n" +

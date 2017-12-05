@@ -1,8 +1,8 @@
 
-\say "This Is Print For Fortran And LaTeX"
+print "This Is Print For Fortran And LaTeX"
 
-! \say "This Print Is Only For Fortran"
+! \print "This Print Is Only In Fortran"
 
-# \say "But This Is Only For LaTeX"
+# \print "But This Will Be Printed Only In LaTeX"
 
-! # \say "And No One Will See This One"
+! # print "And No One Will See This One"
