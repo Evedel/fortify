@@ -9,6 +9,7 @@ import (
 
 	"say"
 	"lexer"
+	"syntaxer"
 	"compile"
 )
 
@@ -69,7 +70,9 @@ func main() {
 					source = source + string(b)
 				}
 				tokenisedForm := lexer.Tokenise(source)
-				say.L1("Tokenised ", tokenisedForm, "\n")
+				_ = syntaxer.BuildTree(tokenisedForm)
+				// say.L1("Tokenised ", tokenisedForm, "\n")
+				// say.L1("Tokenised ", tokenisedForm, "\n")
 				compile.LaTeX(source, sourceName)
 			} else {
 				say.L3(" Error:",  err, "\n")

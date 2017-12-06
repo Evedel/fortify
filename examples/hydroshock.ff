@@ -18,7 +18,7 @@ var x, n, v, dv, h, \rho, m, P, u, c
 
 x, n  = \PlaceParticles{D, dr, 'uniform'}
 
-\forall a=[1,n] {
+\forall a=1..n \{ \{
   v_a    = [0.1*\sin(pi * x_{1,a}), 0, 0]
   dv_a   = [0, 0, 0]
   h_a    = h_{fac} * dr_1
@@ -27,18 +27,18 @@ x, n  = \PlaceParticles{D, dr, 'uniform'}
   P_a    = P_0
   u_a    = P_0/(\gamma-1)/\rho_a
   c_a    = 1.
-}
+\}
 
 var t, dt, tx, tv, tdv, tu, kdt
 
 t  = 0.
 dt = 0.
 
-\while (t < t_{finish}) {
+\while (t < t_{finish}) \{
   \forall a=1..n \print{t, x_a, v_a, dv_a, m_a, rho_a, h_a, P_a, u_a}
 
   dt = .3 * \min(h) / \max(c)
-  \forall a=[1,n] {
+  \forall a=1..n \{
     tx_a = x_a
     tv_a = v_a
     tdv_a = dv_a
@@ -46,34 +46,36 @@ dt = 0.
     x_a = tx_a + dt * tv_a + 0.5 * dt * dt * tdv_a
     v_a = tv_a + dt * tdv_a
     u_a = tu_a + dt * du_a
-  }
+  \}
 
   kdt = \BuildKDTree{x}
 
-  \forall a=1..n {
+  \forall a=1..n \{
     rho_a = \sum_b{m_b * W{(r_a - r_b), h_a, kdt}}
     h_a = h_{fac} * (m_a / rho_a)^(1/dim)
-  }
+  \}
 
   \periodic{\rho}
   \periodic{h}
-  \forall a=1..n {
+  \forall a=1..n \{
     p_a = (\gamma - 1) * \rho_a * u_a
     c_a = \sqrt(\gamma * p_a / \rho_a)
-  }
+  \}
 
   \periodic{p}
   \periodic{c}
 
-  \forall a=1..n {
+  \forall a=1..n \{
     dv_a = -\sum_b{m_b * (P_a * \nablaW{(r_a - r_b), h_a, kdt} / \rho_a^2 + P_b * \nablaW{(r_a - r_b), h_b, kdt} / \rho_b^2)}
     du_a = \sum_b{m_b * (v_a-v_b \cdot p_a) * \nablaW{(r_a - r_b), h_a, kdt)} / \rho_a^2)}
-  }
+  \}
 
   \periodic{dv}
   \periodic{du}
 
-  v_a = v_a + 0.5 * dt * (dv_a - tdv_a)
-  u_a = u_a + 0.5 * dt * (du_a - tdu_a)
-  t = t + dt
-}
+  \forall a=1..n \{
+    v_a = v_a + 0.5 * dt * (dv_a - tdv_a)
+    u_a = u_a + 0.5 * dt * (du_a - tdu_a)
+    t = t + dt
+  \}
+\}

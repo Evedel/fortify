@@ -27,7 +27,7 @@ func Tokenise(source string) (Tokenised []dictionary.Token) {
     char := string(source[curpos])
 
     if (char == " ") {
-      if len(word) > 0 {
+      if len(word) != 0 {
         if id, ok := dictionary.KeyWordRaw[word]; ok {
           t.Id = id
           t.IdName = word
@@ -49,10 +49,17 @@ func Tokenise(source string) (Tokenised []dictionary.Token) {
         // word is not empty but there is special symbol
         if len(word) != 0 {
           var t2 dictionary.Token
-          t2.Id       = dictionary.Word
-          t2.IdName   = "word"
-          t2.ValueStr = word
-          // say.L1("|" + t2.IdName + "|", t2.Id, "|" + t2.ValueStr + "|\n" )
+          if id, ok := dictionary.KeyWordRaw[word]; ok {
+            t2.Id = id
+            t2.IdName = word
+          } else if id, ok := dictionary.KeyWordBackslash[word]; ok {
+            t2.Id = id
+            t2.IdName = word
+          } else if t2.Id == dictionary.None {
+            t2.Id       = dictionary.Word
+            t2.IdName   = "word"
+            t2.ValueStr = word
+          }
           Tokenised = append(Tokenised, t2)
         }
       }

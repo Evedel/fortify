@@ -4,14 +4,22 @@ package dictionary
 const (
   None           = iota
   WrongSymbol    = iota
-  CarriageReturn = iota
-  CommentTex     = iota
-  CommentF90     = iota
-  DoubleQuote    = iota
-  NumberInt      = iota
-  numberFlt      = iota
+
+  CarriageReturn  = iota
+  CommentTex      = iota
+  CommentF90      = iota
+  DoubleQuote     = iota
+  Comma           = iota
+
+  CurlyBracketOpen  = iota
+  CurlyBracketClose = iota
+
+  NumberInt = iota
+  NumberFlt = iota
+  Word      = iota
+  String    = iota
+
   VariableId     = iota
-  Word           = iota
   Print          = iota
   VarDeclaration = iota
 )
@@ -21,56 +29,36 @@ var SpecialSymbol = map[string]int{
   "\n": CarriageReturn,
   "!" : CommentTex,
   "#" : CommentF90,
-  "\"": DoubleQuote }
+  "\"": DoubleQuote,
+  "{" : CurlyBracketOpen,
+  "}" : CurlyBracketClose,
+  "," : Comma }
 
-// Key words on fortify
 var KeyWordRaw  = map[string]int{
   "print": Print,
   "var": VarDeclaration}
 
-// Key words of fortify with backslash
 var KeyWordBackslash  = map[string]int{
   "\\print": Print,
   "\\var": VarDeclaration }
 
 var DataObject = map[string]int{
-  "string" : Word }
+  "word" : Word,
+  "string" : String }
 
 type Token struct {
-    Id int
-    IdName string
-    ValueInt int
-    ValueFlt float64
-    ValueStr string }
-
-func NameFromId(Id int) (key string, ok bool) {
-  for k, v := range SpecialSymbol {
-    if v == Id {
-      key = k
-      ok = true
-      return
-    }
-  }
-  for k, v := range KeyWordRaw {
-    if v == Id {
-      key = k
-      ok = true
-      return
-    }
-  }
-  for k, v := range KeyWordBackslash {
-    if v == Id {
-      key = k
-      ok = true
-      return
-    }
-  }
-  for k, v := range DataObject {
-    if v == Id {
-      key = k
-      ok = true
-      return
-    }
-  }
-  return
+  Id int
+  IdName string
+  ValueInt int
+  ValueFlt float64
+  ValueStr string
 }
+
+type TokenNode struct {
+  This Token
+  // Parent TokenNode
+  List []TokenNode
+}
+
+// ------============++++++++++++++============------ //
+type RuleInterface func ([]Token)

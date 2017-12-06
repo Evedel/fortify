@@ -8,7 +8,8 @@ import (
 )
 
 var Mirrorred = []string{"#"}
-var UnMirrorred = []string{"\\say"}
+var UnMirrorred = []string{"\\print", "\\Kernel", "\\PlaceParticles", "\\while",
+  "\\BuildKDTree", "\\periodic", "\\nablaW"}
 
 func LaTeX(source string, name [3]string) {
   strsc := source
@@ -34,8 +35,9 @@ func LaTeX(source string, name [3]string) {
     strsc = strings.Replace(strsc, ch, "\\text{" + ch[1:] + "}", -1)
   }
   strsc = "& " + strsc + "\n"
-  strsc = "\\documentclass[12pt]{article} \n" +
+  strsc = "\\documentclass[8pt]{article} \n" +
           "\\usepackage{amsmath} \n" +
+          "\\allowdisplaybreaks\n" +
           "\\begin{document} \n" +
           "\\begin{equation} \n" +
           "\\begin{aligned} \n" +

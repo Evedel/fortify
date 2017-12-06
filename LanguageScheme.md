@@ -2,8 +2,6 @@ Main idea -- write math, not code.
 Latex format.
 Compiled in pdf and fortran.
 
-https://en.wikibooks.org/wiki/LaTeX/Algorithms
-
 `var` set of variables (definition)
 array assignment `= []`
 array read through `A_{i,j,k}`
