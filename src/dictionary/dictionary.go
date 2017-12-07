@@ -2,6 +2,9 @@ package dictionary
 
 // all the possible words
 const (
+  Program    = iota
+  Expression = iota
+
   None           = iota
   WrongSymbol    = iota
 
@@ -10,6 +13,7 @@ const (
   CommentF90      = iota
   DoubleQuote     = iota
   Comma           = iota
+  Space           = iota
 
   CurlyBracketOpen  = iota
   CurlyBracketClose = iota
@@ -32,7 +36,8 @@ var SpecialSymbol = map[string]int{
   "\"": DoubleQuote,
   "{" : CurlyBracketOpen,
   "}" : CurlyBracketClose,
-  "," : Comma }
+  "," : Comma,
+  " " : Space }
 
 var KeyWordRaw  = map[string]int{
   "print": Print,

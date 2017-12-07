@@ -40,7 +40,7 @@ func L0(str string, obj interface{}, str2 string){
 func L3(str string, obj interface{}, str2 string){
   // p1 - string, p2 - object, p3 - pretty
   if mode > 0 {
-    fmt.Print(red("[ " + time.Now().Format(time.RFC1123) + " ][ L1 ] "),
+    fmt.Print(red("[ " + time.Now().Format(time.RFC1123) + " ][ L3 ] "), str,
       red(obj), str2)
   }
 }
@@ -58,7 +58,7 @@ func L2(str string){
 
 func L1(str string, obj interface{}, str2 string){
   if mode > 2 {
-    fmt.Print(cyan("[ " + time.Now().Format(time.RFC1123) + " ]" + "[ L3 ] "), str,
+    fmt.Print(cyan("[ " + time.Now().Format(time.RFC1123) + " ]" + "[ L1 ] "), str,
       obj, str2)
   }
 }

@@ -17,56 +17,49 @@ const (
 
 func Tokenise(source string) (Tokenised []dictionary.Token) {
   curpos := 0
-  var word string
 
   var t dictionary.Token
   t.Id = dictionary.None
   t.IdName = "none"
-
+  word := ""
   for curpos < len(source) {
-    char := string(source[curpos])
+    word += string(source[curpos])
 
-    if (char == " ") {
-      if len(word) != 0 {
-        if id, ok := dictionary.KeyWordRaw[word]; ok {
+    if id, ok := dictionary.SpecialSymbol[word]; ok {
+      t.Id = id
+      t.IdName = word
+    } else if id, ok := dictionary.KeyWordRaw[word]; ok {
+      t.Id = id
+      t.IdName = word
+    } else if id, ok := dictionary.KeyWordBackslash[word]; ok {
+      t.Id = id
+      t.IdName = word
+    }
+    if t.Id == dictionary.None {
+      for backpos := len(word)-1; backpos > -1; backpos-- {
+        if id, ok := dictionary.SpecialSymbol[word[backpos:]]; ok {
           t.Id = id
-          t.IdName = word
-        } else if id, ok := dictionary.KeyWordBackslash[word]; ok {
+          t.IdName = word[backpos:]
+        } else if id, ok := dictionary.KeyWordRaw[word[backpos:]]; ok {
           t.Id = id
-          t.IdName = word
-        } else if t.Id == dictionary.None {
-          t.Id       = dictionary.Word
-          t.IdName   = "word"
-          t.ValueStr = word
+          t.IdName = word[backpos:]
+        } else if id, ok := dictionary.KeyWordBackslash[word[backpos:]]; ok {
+          t.Id = id
+          t.IdName = word[backpos:]
         }
-      } else {
-        char = ""
-      }
-    } else {
-      if id, ok := dictionary.SpecialSymbol[char]; ok {
-        t.Id = id
-        t.IdName = char
-        // word is not empty but there is special symbol
-        if len(word) != 0 {
-          var t2 dictionary.Token
-          if id, ok := dictionary.KeyWordRaw[word]; ok {
-            t2.Id = id
-            t2.IdName = word
-          } else if id, ok := dictionary.KeyWordBackslash[word]; ok {
-            t2.Id = id
-            t2.IdName = word
-          } else if t2.Id == dictionary.None {
-            t2.Id       = dictionary.Word
-            t2.IdName   = "word"
-            t2.ValueStr = word
-          }
-          Tokenised = append(Tokenised, t2)
+        if t.Id != dictionary.None {
+          Tokenised = append(Tokenised,
+            dictionary.Token{
+              dictionary.Word,
+              "word",
+              0, 0,
+              word[:backpos]})
+          break
         }
       }
     }
 
     if t.Id != dictionary.None {
-      // say.L1("|" + t.IdName + "|", t.Id, "|" + t.ValueStr + "|\n" )
       Tokenised = append(Tokenised, t)
 
       t.Id = dictionary.None
@@ -76,9 +69,6 @@ func Tokenise(source string) (Tokenised []dictionary.Token) {
       t.ValueStr = ""
 
       word = ""
-      char = ""
-    } else {
-      word += char
     }
     curpos += 1
   }

@@ -58,9 +58,9 @@ func main() {
         // default from definition
 			}
 		}
-		say.L1(" Working Directory: ", sourceName, "\n")
+		say.L1("Working Directory: ", sourceName, "\n")
 		if _, err := os.Stat(sourceInputFull); os.IsNotExist(err) {
-			say.L3(" File doesn't exist:", sourceName, "\n")
+			say.L3("File doesn't exist:", sourceName, "\n")
 		} else {
 			err := os.Mkdir(sourceName[2] + "/" + sourceName[0], 0744)
 			if (err == nil) || (os.IsExist(err)) {
