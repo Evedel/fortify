@@ -7,9 +7,9 @@ import (
 )
 
 func PrintTokenTree(TokenTree dictionary.TokenNode, level string) {
-  say.L0(level + ">", TokenTree.This, "\n")
+  say.L0(level + "> ", TokenTree.This, "\n")
   for ttch := range TokenTree.List {
-    PrintTokenTree(TokenTree.List[ttch], level + "+--")
+    PrintTokenTree(TokenTree.List[ttch], level + "|--")
   }
 }
 

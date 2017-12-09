@@ -1,8 +1,8 @@
 
 print{"This Is Print For Fortran And LaTeX"}
 
-! \print{"This Print Is Only In Fortran"}
+% \print{"This Print Works Only In Fortran"}
 
-# \print{"But This Will Be Printed Only In LaTeX"}
+! \print{"But This Will Be Printed Only In LaTeX"}
 
-! # print{"And No One Will See This One"}
+# print{"And this one is comment for both"}

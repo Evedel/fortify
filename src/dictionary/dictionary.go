@@ -9,11 +9,13 @@ const (
   WrongSymbol    = iota
 
   CarriageReturn  = iota
-  CommentTex      = iota
-  CommentF90      = iota
   DoubleQuote     = iota
   Comma           = iota
   Space           = iota
+
+  CommentTex = iota   // Not shown in tex, but compiled in f90
+  CommentF90 = iota   // Not shown in f90, but compiled in tex
+  CommentAll = iota   // Not compiled ta all
 
   CurlyBracketOpen  = iota
   CurlyBracketClose = iota
@@ -31,8 +33,9 @@ const (
 // Symbols
 var SpecialSymbol = map[string]int{
   "\n": CarriageReturn,
-  "!" : CommentTex,
-  "#" : CommentF90,
+  "%" : CommentTex,
+  "!" : CommentF90,
+  "#" : CommentAll,
   "\"": DoubleQuote,
   "{" : CurlyBracketOpen,
   "}" : CurlyBracketClose,

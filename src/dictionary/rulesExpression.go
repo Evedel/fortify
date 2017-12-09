@@ -8,36 +8,81 @@ func RuleExpression(ttail []Token) (correct bool, stopInd int, childs []TokenNod
   correct = false
   stopInd = 0
   errmsg = "Not a correct expression."
-  indx := 0
-  for indx < len(ttail) {
-    // say.L0("", ttail[indx], "\n")
-    if ttail[indx].Id == Space {
-      // ignore
-    } else if ttail[indx].Id == CarriageReturn {
+  index := 0
+  for index < len(ttail) {
+    // say.L0("", ttail[index], "\n")
+    if ttail[index].Id == Space {
       correct = true
-      stopInd = indx
+      stopInd = index
+      errmsg = ""
+      childs = append([]TokenNode{}, TokenNode{ttail[index], nil})
+      return
+    } else if ttail[index].Id == CarriageReturn {
+      correct = true
+      stopInd = index
       errmsg = ""
       childs = append([]TokenNode{}, TokenNode{Token{ CarriageReturn, "\\n", 0, 0, ""}, nil})
       return
-    } else if ttail[indx].Id == Print {
-      ok, is, chch, erms := RulePrint(ttail[indx+1:])
+    } else if ttail[index].Id == Print {
+      ok, is, chch, erms := RulePrint(ttail[index+1:])
       correct = ok
       if ok {
-        stopInd = indx + is + 1
-        childs = append([]TokenNode{}, TokenNode{ttail[indx], chch})
+        stopInd = index + is + 1
+        childs = append([]TokenNode{}, TokenNode{ttail[index], chch})
       } else {
         errmsg = erms
       }
       return
-    // } else if ttail[indx].Id == CommentTex {
-    //
-    // } else if ttail[indx].Id == CommentF90 {
-    //
+    } else if (ttail[index].Id == CommentTex) || (ttail[index].Id == CommentF90) {
+      // There should be valid expression between comment and \n
+      CommentToken := TokenNode{ttail[index], []TokenNode{}}
+      indexInternal := index + 1
+      for indexInternal < len(ttail) {
+        if ttail[indexInternal].Id == CarriageReturn {
+          childs = append(childs, CommentToken)
+          childs = append(childs, TokenNode{Token{ CarriageReturn, "\\n", 0, 0, ""}, nil})
+          correct = true
+          stopInd = indexInternal
+          errmsg = ""
+          return
+        } else {
+          ok, is, chch, erms := RuleExpression(ttail[indexInternal:])
+          if ok {
+            CommentToken.List = append(CommentToken.List, TokenNode{Token{ Expression, "expression", 0, 0, ""}, chch})
+            indexInternal += is
+          } else {
+            errmsg = erms
+            return
+          }
+        }
+        indexInternal += 1
+      }
+    } else if ttail[index].Id == CommentAll {
+      CommentToken := TokenNode{ttail[index], []TokenNode{}}
+      indexInternal := index + 1
+      strval := ""
+      for indexInternal < len(ttail) {
+        if ttail[indexInternal].Id == CarriageReturn {
+          correct = true
+          stopInd = indexInternal
+          errmsg = ""
+          CommentToken.List = append(CommentToken.List, TokenNode{Token{ String, "string", 0, 0, strval}, nil})
+          childs = append(childs, CommentToken)
+          return
+        } else {
+          if ttail[indexInternal].Id == Word {
+            strval += ttail[indexInternal].ValueStr
+          } else {
+            strval += ttail[indexInternal].IdName
+          }
+        }
+        indexInternal += 1
+      }
     } else {
-      errmsg = "Cannot use " + ttail[indx].IdName + " in expression. " + errmsg
+      errmsg = "There is no defined rule for [ " + ttail[index].IdName + " ] symbol. " + errmsg
       return
     }
-    indx += 1
+    index += 1
   }
   return
 }

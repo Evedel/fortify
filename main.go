@@ -19,7 +19,7 @@ func main() {
 	source := ""
 	flag.Parse()
 	tailInput := flag.Args()
-	say.L1(" Input File: ", tailInput, "\n")
+	say.L1("Input File: ", tailInput, "\n")
 
 	if len(tailInput) == 1 {
 		sourceInputFull := tailInput[0]
