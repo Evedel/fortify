@@ -6,10 +6,10 @@ import (
   "dictionary"
 )
 
-func PrintTokenTree(TokenTree dictionary.TokenNode, level string) {
+func PrintSyntaxTree(TokenTree dictionary.TokenNode, level string) {
   say.L0(level + "> ", TokenTree.This, "\n")
   for ttch := range TokenTree.List {
-    PrintTokenTree(TokenTree.List[ttch], level + "|--")
+    PrintSyntaxTree(TokenTree.List[ttch], level + "|--")
   }
 }
 
@@ -30,7 +30,5 @@ func BuildTree(Tokenised []dictionary.Token) (TokenTree dictionary.TokenNode) {
       indx  = len(Tokenised) + 1
     }
   }
-  say.L1("TokenTree", "", "\n")
-  PrintTokenTree(TokenTree, "--")
   return
 }

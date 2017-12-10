@@ -1,56 +1,64 @@
 package compile
 
 import (
-  // "fmt"
-  // "os/exec"
-  // "strings"
-  // "io/ioutil"
+  "say"
+  "dictionary"
+
+  "os/exec"
+  "io/ioutil"
 )
 
-func fortran(source string, name [3]string) {
-  // strsc := source
-  // strnm := name
-  // strscnew := ""
-  // fmt.Print("-> LaTeX compile: ", strnm[0], "\n")
-  // for _, line := range strings.Split(strsc, "\n") {
-  //   newline := line
-  //   idlc := strings.Index(line, "!")
-  //   if idlc != -1 {
-  //     newline = line[:idlc]
-  //   }
-  //   if idlc != 0 {
-  //     strscnew += newline + "\n"
-  //   }
-  // }
-  // strsc = strscnew
-  // strsc = strings.Replace(strsc, "\n", " \\\\ \n & ", -1)
-  // for _, ch := range Mirrorred {
-  //   strsc = strings.Replace(strsc, ch, "\\" + string(ch), -1)
-  // }
-  // for _, ch := range UnMirrorred {
-  //   strsc = strings.Replace(strsc, ch, "\\text{" + ch[1:] + "}", -1)
-  // }
-  // strsc = "& " + strsc + "\n"
-  // strsc = "\\documentclass[12pt]{article} \n" +
-  //         "\\usepackage{amsmath} \n" +
-  //         "\\begin{document} \n" +
-  //         "\\begin{equation} \n" +
-  //         "\\begin{aligned} \n" +
-  //         strsc +
-  //         "\\end{aligned} \n" +
-  //         "\\end{equation} \n" +
-  //         "\\end{document} \n"
-  //
-  // if err := ioutil.WriteFile("./" + strnm[2] + "/" + strnm[0] + "/" + strnm[0] + ".tex",
-  //   []byte(strsc), 0644); err != nil {
-  //     fmt.Print("-> Error: ", err, "\n")
-  // } else {
-  //   cmd := exec.Command("pdflatex", "-output-directory", "./" + strnm[2] + "/" + strnm[0] + "/",
-  //     "./" + strnm[2] + "/" + strnm[0] + "/" + strnm[0] + ".tex")
-  //   if output, err := cmd.Output(); err != nil {
-  //     fmt.Print("-> Error: ", err, "\n")
-  //     fmt.Print("-> Error: ", cmd.Args, "\n")
-  //     fmt.Print("-> Error: ", string(output), "\n")
-  //   }
-  // }
+func f90fy(SyntaxTree dictionary.TokenNode) (Result string) {
+  tn := SyntaxTree
+  tnid := tn.This.Id
+
+  if tnid == dictionary.Program {
+    for ttch := range SyntaxTree.List {
+      Result += f90fy(SyntaxTree.List[ttch])
+    }
+  } else if tnid == dictionary.Expression {
+    tnchid := tn.List[0].This.Id
+    chlist := tn.List[0].List
+    if (tnchid == dictionary.CarriageReturn) ||
+        (tnchid == dictionary.Space)         ||
+        (tnchid == dictionary.CommentAll)    ||
+        (tnchid == dictionary.CommentF90) {
+      //------------//
+      // do nothing //
+      //------------//
+    } else if tnchid == dictionary.CommentTex {
+      for ttch := range tn.List[0].List {
+        Result += f90fy(tn.List[0].List[ttch])
+      }
+    } else if tnchid == dictionary.Print {
+      Result += "\t" + "print*, "
+      for i := 1; i < len(chlist)-1; i++ {
+        Result += chlist[i].This.ValueStr
+      }
+      Result += "\n"
+    }
+  }
+  return
+}
+
+func Fortran(SyntaxTree dictionary.TokenNode, Name [3]string) {
+  strnm := Name
+  say.L1("Fortran compile: ", strnm[0], "\n")
+  srcnew := "program main\n" +
+            f90fy(SyntaxTree) +
+            "end program main"
+
+  say.L0(srcnew, "", "\n")
+  program := strnm[2] + "/" + strnm[0] + "/" + strnm[0]
+  if err := ioutil.WriteFile(program + ".f90",
+    []byte(srcnew), 0644); err != nil {
+      say.L3("", err, "\n")
+  } else {
+    cmd := exec.Command("gfortran", "-o", program, program + ".f90")
+    if output, err := cmd.Output(); err != nil {
+      say.L3("", err, "\n")
+      say.L3("", cmd.Args, "\n")
+      say.L3("", string(output), "\n")
+    }
+  }
 }

@@ -1,5 +1,7 @@
 package dictionary
 
+// import("say")
+
 // all the possible words
 const (
   Program    = iota
@@ -30,7 +32,7 @@ const (
   VarDeclaration = iota
 )
 
-// Symbols
+var SpecialSymbolReverse = map[int]string{}
 var SpecialSymbol = map[string]int{
   "\n": CarriageReturn,
   "%" : CommentTex,
@@ -41,15 +43,22 @@ var SpecialSymbol = map[string]int{
   "}" : CurlyBracketClose,
   "," : Comma,
   " " : Space }
+var NeedbeMerroredReverse = map [int]string{
+  CurlyBracketOpen  : "{",
+  CurlyBracketClose : "}",
+  CommentAll        : "#" }
 
+var KeyWordRawReverse = map[int]string{}
 var KeyWordRaw  = map[string]int{
   "print": Print,
   "var": VarDeclaration}
 
+var KeyWordBackslashReverse = map[int]string{}
 var KeyWordBackslash  = map[string]int{
   "\\print": Print,
   "\\var": VarDeclaration }
 
+var DataObjectReverse = map[int]string{}
 var DataObject = map[string]int{
   "word" : Word,
   "string" : String }
@@ -68,5 +77,17 @@ type TokenNode struct {
   List []TokenNode
 }
 
-// ------============++++++++++++++============------ //
-type RuleInterface func ([]Token)
+func Init() {
+  for key := range SpecialSymbol {
+    SpecialSymbolReverse[SpecialSymbol[key]] = key
+  }
+  for key := range KeyWordRaw {
+    KeyWordRawReverse[KeyWordRaw[key]] = key
+  }
+  for key := range DataObject {
+    DataObjectReverse[DataObject[key]] = key
+  }
+  for key := range KeyWordBackslash {
+    KeyWordBackslashReverse[KeyWordBackslash[key]] = key
+  }
+}

@@ -9,12 +9,14 @@ import (
 
 	"say"
 	"lexer"
-	"syntaxer"
 	"compile"
+	"syntaxer"
+	"dictionary"
 )
 
 func main() {
 	say.Init("3")
+	dictionary.Init()
 
 	source := ""
 	flag.Parse()
@@ -70,14 +72,14 @@ func main() {
 					source = source + string(b)
 				}
 				tokenisedForm := lexer.Tokenise(source)
-				_ = syntaxer.BuildTree(tokenisedForm)
-				// say.L1("Tokenised ", tokenisedForm, "\n")
-				// say.L1("Tokenised ", tokenisedForm, "\n")
-				compile.LaTeX(source, sourceName)
+				SyntaxTree := syntaxer.BuildTree(tokenisedForm)
+				// syntaxer.PrintSyntaxTree(SyntaxTree, "")
+				compile.LaTeX(SyntaxTree, sourceName)
+				compile.Fortran(SyntaxTree, sourceName)
 			} else {
-				say.L3(" Error:",  err, "\n")
+				say.L3("Error:",  err, "\n")
 			}
 		}
 	}
-	say.L1(" Done. ", "", "\n")
+	say.L1("Done. ", "", "\n")
 }

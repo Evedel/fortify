@@ -1,61 +1,71 @@
 package compile
 
 import (
-  "fmt"
+  "say"
+  "dictionary"
+
   "os/exec"
-  "strings"
   "io/ioutil"
 )
 
-var Mirrorred = []string{"#"}
-var UnMirrorred = []string{"\\print", "\\Kernel", "\\PlaceParticles", "\\while",
-  "\\BuildKDTree", "\\periodic", "\\nablaW"}
+func latexy(SyntaxTree dictionary.TokenNode) (Result string) {
+  tn := SyntaxTree.This
+  if (tn.Id != dictionary.Expression)  &&
+      (tn.Id != dictionary.Program)    &&
+      (tn.Id != dictionary.CommentTex) &&
+      (tn.Id != dictionary.CommentAll) &&
+      (tn.Id != dictionary.CommentF90) {
+    if (tn.Id == dictionary.CarriageReturn) {
+      Result += "\\\\ \n&"
+    } else if _, ok := dictionary.SpecialSymbolReverse[tn.Id]; ok {
+      if _, ok2 := dictionary.NeedbeMerroredReverse[tn.Id]; ok2 {
+        Result += "\\text{\\" + tn.IdName + "}"
+      } else {
+        Result += "\\text{" + tn.IdName + "}"
+      }
+    } else if _, ok := dictionary.KeyWordRawReverse[tn.Id]; ok {
+      if string(tn.IdName[0]) == "\\" {
+        Result += "\\text{\\textbf{" + tn.IdName[1:] + "}}"
+      } else {
+        Result += "\\text{\\textbf{" + tn.IdName + "}}"
+      }
+    } else if _, ok := dictionary.DataObjectReverse[tn.Id]; ok {
+      Result += "\\text{" + tn.ValueStr + "}"
+    }
+  }
+  if (tn.Id != dictionary.CommentTex) && (tn.Id != dictionary.CommentAll) {
+    for ttch := range SyntaxTree.List {
+      Result += latexy(SyntaxTree.List[ttch])
+    }
+  }
+  return
+}
 
-func LaTeX(source string, name [3]string) {
-  strsc := source
-  strnm := name
-  strscnew := ""
-  fmt.Print("-> LaTeX compile: ", strnm[0], "\n")
-  for _, line := range strings.Split(strsc, "\n") {
-    newline := line
-    idlc := strings.Index(line, "!")
-    if idlc != -1 {
-      newline = line[:idlc]
-    }
-    if idlc != 0 {
-      strscnew += newline + "\n"
-    }
-  }
-  strsc = strscnew
-  strsc = strings.Replace(strsc, "\n", " \\\\ \n & ", -1)
-  for _, ch := range Mirrorred {
-    strsc = strings.Replace(strsc, ch, "\\" + string(ch), -1)
-  }
-  for _, ch := range UnMirrorred {
-    strsc = strings.Replace(strsc, ch, "\\text{" + ch[1:] + "}", -1)
-  }
-  strsc = "& " + strsc + "\n"
-  strsc = "\\documentclass[8pt]{article} \n" +
+func LaTeX(SyntaxTree dictionary.TokenNode, Name [3]string) {
+
+  strnm := Name
+  say.L1("LaTeX compile: ", strnm[0], "\n")
+  srcnew := "\\documentclass[8pt]{article} \n" +
           "\\usepackage{amsmath} \n" +
           "\\allowdisplaybreaks\n" +
           "\\begin{document} \n" +
           "\\begin{equation} \n" +
           "\\begin{aligned} \n" +
-          strsc +
+          "&" + latexy(SyntaxTree) +
           "\\end{aligned} \n" +
           "\\end{equation} \n" +
           "\\end{document} \n"
 
   if err := ioutil.WriteFile("./" + strnm[2] + "/" + strnm[0] + "/" + strnm[0] + ".tex",
-    []byte(strsc), 0644); err != nil {
-      fmt.Print("-> Error: ", err, "\n")
+    []byte(srcnew), 0644); err != nil {
+      say.L3("", err, "\n")
   } else {
     cmd := exec.Command("pdflatex", "-output-directory", "./" + strnm[2] + "/" + strnm[0] + "/",
       "./" + strnm[2] + "/" + strnm[0] + "/" + strnm[0] + ".tex")
     if output, err := cmd.Output(); err != nil {
-      fmt.Print("-> Error: ", err, "\n")
-      fmt.Print("-> Error: ", cmd.Args, "\n")
-      fmt.Print("-> Error: ", string(output), "\n")
+      say.L3("", err, "\n")
+      say.L3("", cmd.Args, "\n")
+      say.L3("", string(output), "\n")
     }
   }
 }
