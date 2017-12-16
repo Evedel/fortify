@@ -1,0 +1,35 @@
+% print{"Fortran"}
+%print{"Fortran"}
+%  print{"Fortran"}
+%   print{"Fortran"}
+%\print{"Fortran"}
+%  \print{"Fortran"}
+% Fortran
+! print{"Fortran"}
+# print{"Fortran"}
+
+!print{"Fortran"}
+#print{"Fortran"}
+
+!  print{"Fortran"}
+#  print{"Fortran"}
+
+!   print{"Fortran"}
+#   print{"Fortran"}
+
+!\print{"Fortran"}
+#\print{"Fortran"}
+
+!  \print{"Fortran"}
+#  \print{"Fortran"}
+
+%   \print{"Fortran"}
+!   \print{"Fortran"}
+#   \print{"Fortran"}
+
+% {"Fortran"}
+! {"Fortran"}
+# {"Fortran"}
+
+! Fortran
+# Fortran
