@@ -1,35 +1,23 @@
 % print{"Fortran"}
-%print{"Fortran"}
-%  print{"Fortran"}
-%   print{"Fortran"}
-%\print{"Fortran"}
-%  \print{"Fortran"}
-% Fortran
+-
+print*, "Fortran"
+
 ! print{"Fortran"}
+\text{ }\text{\textbf{print}}\{\text{"Fortran"}\}\\&
+-
+
 # print{"Fortran"}
+-
+-
 
-!print{"Fortran"}
-#print{"Fortran"}
-
-!  print{"Fortran"}
-#  print{"Fortran"}
-
-!   print{"Fortran"}
-#   print{"Fortran"}
-
-!\print{"Fortran"}
-#\print{"Fortran"}
-
-!  \print{"Fortran"}
-#  \print{"Fortran"}
-
-%   \print{"Fortran"}
-!   \print{"Fortran"}
-#   \print{"Fortran"}
-
-% {"Fortran"}
-! {"Fortran"}
-# {"Fortran"}
+% Fortran
+-1
+-1
 
 ! Fortran
+-1
+-1
+
 # Fortran
+-
+-

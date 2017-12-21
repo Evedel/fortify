@@ -8,46 +8,53 @@ import (
   "io/ioutil"
 )
 
-func toLatexLang(SyntaxTree dictionary.TokenNode) (Result string) {
-  tn := SyntaxTree.This
-  if (tn.Id != dictionary.Expression)  &&
-      (tn.Id != dictionary.Program)    &&
-      (tn.Id != dictionary.CommentTex) &&
-      (tn.Id != dictionary.CommentAll) &&
-      (tn.Id != dictionary.CommentF90) {
-    if (tn.Id == dictionary.CarriageReturn) {
-      Result += "\\\\ \n&"
-    } else if _, ok := dictionary.SpecialSymbolReverse[tn.Id]; ok {
-      if _, ok2 := dictionary.NeedbeMerroredReverse[tn.Id]; ok2 {
-        Result += "\\text{\\" + tn.IdName + "}"
-      } else {
-        Result += "\\text{" + tn.IdName + "}"
-      }
-    } else if _, ok := dictionary.KeyWordRawReverse[tn.Id]; ok {
-      if string(tn.IdName[0]) == "\\" {
-        Result += "\\text{\\textbf{" + tn.IdName[1:] + "}}"
-      } else {
-        Result += "\\text{\\textbf{" + tn.IdName + "}}"
-      }
-    } else if _, ok := dictionary.DataObjectReverse[tn.Id]; ok {
-      Result += "\\text{" + tn.ValueStr + "}"
-    }
-  }
-  if (tn.Id != dictionary.CommentTex) && (tn.Id != dictionary.CommentAll) {
+func toLatex(SyntaxTree dictionary.TokenNode) (Result string) {
+  tn := SyntaxTree
+  tnid := tn.This.Id
+  if tnid == dictionary.Program {
     for ttch := range SyntaxTree.List {
-      Result += toLatexLang(SyntaxTree.List[ttch])
+      Result += toLatex(SyntaxTree.List[ttch])
+    }
+  } else if tnid == dictionary.Expression {
+    tnchid := tn.List[0].This.Id
+    tnchlist := tn.List[0].List
+    tnchidnm := tn.List[0].This.IdName
+
+    if (tnchid == dictionary.CommentAll)  ||
+        (tnchid == dictionary.CommentTex) {
+      //------------//
+      // do nothing //
+      //------------//
+    } else if tnchid == dictionary.CarriageReturn {
+      Result += "\\\\\n&"
+    } else if tnchid == dictionary.CommentF90 {
+      for ttch := range tnchlist {
+        Result += toLatex(tnchlist[ttch])
+      }
+    } else if _, ok := dictionary.SpecialSymbolReverse[tnchid]; ok {
+      if _, ok2 := dictionary.NeedbeMerroredReverse[tnchid]; ok2 {
+        Result += "\\text{\\" + tnchidnm + "}"
+      } else {
+        Result += "\\text{" + tnchidnm + "}"
+      }
+    } else if tnchid == dictionary.Print {
+      Result += "\\text{\\textbf{print}}\\{"
+      for i := 1; i < len(tnchlist)-1; i++ {
+        Result += "\\text{" + tnchlist[i].This.ValueStr + "}"
+      }
+      Result += "\\}"
     }
   }
   return
 }
 
-func toCompiledLang(SyntaxTree dictionary.TokenNode, langtype int) (Result string) {
+func toFortran(SyntaxTree dictionary.TokenNode) (Result string) {
   tn := SyntaxTree
   tnid := tn.This.Id
 
   if tnid == dictionary.Program {
     for ttch := range SyntaxTree.List {
-      Result += toCompiledLang(SyntaxTree.List[ttch], langtype)
+      Result += toFortran(SyntaxTree.List[ttch])
     }
   } else if tnid == dictionary.Expression {
     tnchid := tn.List[0].This.Id
@@ -61,19 +68,44 @@ func toCompiledLang(SyntaxTree dictionary.TokenNode, langtype int) (Result strin
       //------------//
     } else if tnchid == dictionary.CommentTex {
       for ttch := range tn.List[0].List {
-        Result += toCompiledLang(tn.List[0].List[ttch], langtype)
+        Result += toFortran(tn.List[0].List[ttch])
       }
     } else if tnchid == dictionary.Print {
-      if langtype == ltfort {
-        Result += "\t" + "print*, "
-        for i := 1; i < len(chlist)-1; i++ {
-          Result += chlist[i].This.ValueStr
-        }
-        Result += "\n"
-      } else if langtype == ltclang {
-        for i := 1; i < len(chlist)-1; i++ {
-          Result += "\t" + "printf(" + chlist[i].This.ValueStr + ");\n"
-        }
+      Result += "\t" + "print*, "
+      for i := 1; i < len(chlist)-1; i++ {
+        Result += chlist[i].This.ValueStr
+      }
+      Result += "\n"
+    }
+  }
+  return
+}
+
+func toClang(SyntaxTree dictionary.TokenNode) (Result string) {
+  tn := SyntaxTree
+  tnid := tn.This.Id
+
+  if tnid == dictionary.Program {
+    for ttch := range SyntaxTree.List {
+      Result += toClang(SyntaxTree.List[ttch])
+    }
+  } else if tnid == dictionary.Expression {
+    tnchid := tn.List[0].This.Id
+    chlist := tn.List[0].List
+    if (tnchid == dictionary.CarriageReturn) ||
+        (tnchid == dictionary.Space)         ||
+        (tnchid == dictionary.CommentAll)    ||
+        (tnchid == dictionary.CommentF90) {
+      //------------//
+      // do nothing //
+      //------------//
+    } else if tnchid == dictionary.CommentTex {
+      for ttch := range tn.List[0].List {
+        Result += toClang(tn.List[0].List[ttch])
+      }
+    } else if tnchid == dictionary.Print {
+      for i := 1; i < len(chlist)-1; i++ {
+        Result += "\t" + "printf(" + chlist[i].This.ValueStr + ");\n"
       }
     }
   }
@@ -84,7 +116,7 @@ func ToFortran(SyntaxTree dictionary.TokenNode, Name [3]string) {
   strnm := Name
   say.L1("Fortran compile: ", strnm[0], "\n")
   srcnew := "program main\n" +
-            toCompiledLang(SyntaxTree, ltfort) +
+            toFortran(SyntaxTree) +
             "end program main"
 
   say.L0(srcnew, "", "\n")
@@ -108,7 +140,7 @@ func ToClang(SyntaxTree dictionary.TokenNode, Name [3]string) {
   srcnew := "#include<stdio.h>\n" +
             "main()\n" +
             "{\n" +
-            toCompiledLang(SyntaxTree, ltclang) +
+            toClang(SyntaxTree) +
             "}\n"
 
   say.L0(srcnew, "", "\n")
@@ -135,7 +167,7 @@ func ToLaTeX(SyntaxTree dictionary.TokenNode, Name [3]string) {
           "\\begin{document} \n" +
           "\\begin{equation} \n" +
           "\\begin{aligned} \n" +
-          "&" + toLatexLang(SyntaxTree) +
+          "&" + toLatex(SyntaxTree) +
           "\\end{aligned} \n" +
           "\\end{equation} \n" +
           "\\end{document} \n"

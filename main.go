@@ -72,11 +72,11 @@ func main() {
 					source = source + string(b)
 				}
 				tokenisedForm := lexer.Tokenise(source)
-				SyntaxTree := syntaxer.BuildTree(tokenisedForm)
+				SyntaxTree, _ := syntaxer.BuildTree(tokenisedForm)
 				// syntaxer.PrintSyntaxTree(SyntaxTree, "")
 				compile.ToLaTeX(SyntaxTree, sourceName)
 				compile.ToFortran(SyntaxTree, sourceName)
-				compile.ToClang(SyntaxTree, sourceName)
+				// compile.ToClang(SyntaxTree, sourceName)
 			} else {
 				say.L3("Error:",  err, "\n")
 			}
