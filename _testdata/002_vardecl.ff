@@ -1,0 +1,27 @@
+var a
+\text{\textbf{var}}\text{ }\text{a}\\&
+ double :: a
+
+var a b
+\text{\textbf{var}}\text{ }\text{a}\text{ }\text{b}\\&
+ double :: a double :: b
+
+vara b
+-1
+-1
+
+var ab
+\text{\textbf{var}}\text{ }\text{ab}\\&
+double :: ab
+
+var a a
+-1
+-1
+
+var { }
+-1
+-1
+
+var print
+-1
+-1

@@ -1,17 +1,10 @@
 package syntaxer
 
-import (
-  "say"
+import(
+  // "say"
 
   "dictionary"
 )
-
-func PrintSyntaxTree(TokenTree dictionary.TokenNode, level string) {
-  say.L0(level + "> ", TokenTree.This, "\n")
-  for ttch := range TokenTree.List {
-    PrintSyntaxTree(TokenTree.List[ttch], level + "|--")
-  }
-}
 
 func BuildTree(Tokenised []dictionary.Token) (TokenTree dictionary.TokenNode, ok bool, errmsg string) {
   ok = true

@@ -45,10 +45,10 @@ func L3(str string, obj interface{}, str2 string){
   }
 }
 
-func L2(str string){
+func L2(str string, obj interface{}, str2 string){
   if mode > 1 {
-    fmt.Printf(yellow("[ " + time.Now().Format(time.RFC1123) + " ]" + "[ L2 ] ") + str + "\n")
-    fmt.Printf("[ " + time.Now().Format(time.RFC1123) + " ]" + "[ L2 ] " + str + "\n")
+    fmt.Print(yellow("[ " + time.Now().Format(time.RFC1123) + " ][ L2 ] "), str,
+      red(obj), str2)
   }
 }
 

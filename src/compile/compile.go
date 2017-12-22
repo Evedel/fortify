@@ -19,6 +19,7 @@ func toLatex(SyntaxTree dictionary.TokenNode) (Result string) {
     tnchid := tn.List[0].This.Id
     tnchlist := tn.List[0].List
     tnchidnm := tn.List[0].This.IdName
+    tnchidst := tn.List[0].This.ValueStr
 
     if (tnchid == dictionary.CommentAll)  ||
         (tnchid == dictionary.CommentTex) {
@@ -43,6 +44,15 @@ func toLatex(SyntaxTree dictionary.TokenNode) (Result string) {
         Result += "\\text{" + tnchlist[i].This.ValueStr + "}"
       }
       Result += "\\}"
+    } else if tnchid == dictionary.DeclarationVar {
+      Result += "\\text{\\textbf{var}}"
+      for ttch := range tnchlist {
+        Result += toLatex(tnchlist[ttch])
+      }
+    } else if tnchid == dictionary.VariableId {
+      Result += "\\text{" + tnchidst + "}"
+    } else {
+      say.L3("There is no defined Latex compiler rules for [" + tnchidnm + "]", "", "\n")
     }
   }
   return
@@ -53,16 +63,24 @@ func toFortran(SyntaxTree dictionary.TokenNode) (Result string) {
   tnid := tn.This.Id
 
   if tnid == dictionary.Program {
+    for varkey, vartype := range dictionary.Variables {
+      if vartype == dictionary.VariableInt { Result += "\t integer :: " + varkey + "\n" }
+      if vartype == dictionary.VariableFloat { Result += "\t real(8) :: " + varkey  + "\n" }
+      if vartype == dictionary.VariableString { Result += "\t character (len=256) :: " + varkey  + "\n" }
+    }
     for ttch := range SyntaxTree.List {
       Result += toFortran(SyntaxTree.List[ttch])
     }
   } else if tnid == dictionary.Expression {
     tnchid := tn.List[0].This.Id
     chlist := tn.List[0].List
+    tnchidnm := tn.List[0].This.IdName
+
     if (tnchid == dictionary.CarriageReturn) ||
         (tnchid == dictionary.Space)         ||
         (tnchid == dictionary.CommentAll)    ||
-        (tnchid == dictionary.CommentF90) {
+        (tnchid == dictionary.CommentF90)    ||
+        (tnchid == dictionary.DeclarationVar) {
       //------------//
       // do nothing //
       //------------//
@@ -76,6 +94,8 @@ func toFortran(SyntaxTree dictionary.TokenNode) (Result string) {
         Result += chlist[i].This.ValueStr
       }
       Result += "\n"
+    } else {
+      say.L3("There is no defined Fortran compiler rules for [" + tnchidnm + "]", "", "\n")
     }
   }
   return
@@ -125,7 +145,7 @@ func ToFortran(SyntaxTree dictionary.TokenNode, Name [3]string) {
     []byte(srcnew), 0644); err != nil {
       say.L3("", err, "\n")
   } else {
-    cmd := exec.Command("gfortran", "-o", program+"-f90", program + ".f90")
+    cmd := exec.Command("gfortran", "-o", program, program + ".f90")
     if output, err := cmd.Output(); err != nil {
       say.L3("", err, "\n")
       say.L3("", cmd.Args, "\n")

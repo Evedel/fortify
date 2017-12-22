@@ -1,6 +1,6 @@
 package dictionary
 
-// import("say")
+import("say")
 
 // all the possible words
 const (
@@ -17,7 +17,7 @@ const (
 
   CommentTex = iota   // Not shown in tex, but compiled in f90
   CommentF90 = iota   // Not shown in f90, but compiled in tex
-  CommentAll = iota   // Not compiled ta all
+  CommentAll = iota   // Not compiled at all
 
   CurlyBracketOpen  = iota
   CurlyBracketClose = iota
@@ -28,8 +28,12 @@ const (
   String    = iota
 
   VariableId     = iota
+  VariableInt    = iota
+  VariableFloat  = iota
+  VariableString = iota
+
   Print          = iota
-  VarDeclaration = iota
+  DeclarationVar = iota
 )
 
 var SpecialSymbolReverse = map[int]string{}
@@ -43,6 +47,7 @@ var SpecialSymbol = map[string]int{
   "}" : CurlyBracketClose,
   "," : Comma,
   " " : Space }
+
 var NeedbeMerroredReverse = map [int]string{
   CurlyBracketOpen  : "{",
   CurlyBracketClose : "}",
@@ -51,17 +56,19 @@ var NeedbeMerroredReverse = map [int]string{
 var KeyWordRawReverse = map[int]string{}
 var KeyWordRaw  = map[string]int{
   "print": Print,
-  "var": VarDeclaration}
+  "var": DeclarationVar }
 
 var KeyWordBackslashReverse = map[int]string{}
 var KeyWordBackslash  = map[string]int{
   "\\print": Print,
-  "\\var": VarDeclaration }
+  "\\var": DeclarationVar }
 
 var DataObjectReverse = map[int]string{}
 var DataObject = map[string]int{
   "word" : Word,
   "string" : String }
+
+var Variables = map[string]int{}
 
 type Token struct {
   Id int
@@ -73,7 +80,6 @@ type Token struct {
 
 type TokenNode struct {
   This Token
-  // Parent TokenNode
   List []TokenNode
 }
 
@@ -89,5 +95,12 @@ func Init() {
   }
   for key := range KeyWordBackslash {
     KeyWordBackslashReverse[KeyWordBackslash[key]] = key
+  }
+}
+
+func PrintSyntaxTree(TokenTree TokenNode, level string) {
+  say.L0(level + "> ", TokenTree.This, "\n")
+  for ttch := range TokenTree.List {
+    PrintSyntaxTree(TokenTree.List[ttch], level + "|--")
   }
 }
