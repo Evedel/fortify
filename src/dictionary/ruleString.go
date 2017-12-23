@@ -4,12 +4,15 @@ package dictionary
 //   "say"
 // )
 
-func RuleString(ttail []Token) (correct bool, stopInd int, childs []TokenNode, errmsg string) {
+func RuleString(ttail []Token) (resCode int, stopInd int, resToken TokenNode, errmsg string) {
   lentt := len(ttail)
-  correct = false
+  resCode = UndefinedError
   stopInd = 0
-  errmsg = "Default string form is \"words words words\""
+  errmsg = ""
+  childs := []TokenNode{}
+  // errmsg = "Default string form is \"word word word ...\""
   if ttail[0].Id != DoubleQuote {
+    resCode = LostBracket
     errmsg = "There is no opening doublequote. " + errmsg
     return
   } else {
@@ -18,14 +21,23 @@ func RuleString(ttail []Token) (correct bool, stopInd int, childs []TokenNode, e
     for ich < lentt {
       childs = append(childs, TokenNode{ttail[ich], nil})
       if ttail[ich].Id == DoubleQuote {
-        correct = true
+        resCode = Ok
         stopInd = ich
-        errmsg = ""
+        strval := ""
+        for itch := 0; itch < len(childs); itch++ {
+          if childs[itch].This.Id == Word {
+            strval += childs[itch].This.ValueStr
+          } else {
+            strval += childs[itch].This.IdName
+          }
+        }
+        resToken = TokenNode{Token{ String, "string", 0, 0, strval}, nil}
         return
       }
       ich += 1
     }
   }
-  errmsg = "There is no closing doublequote. " + errmsg
+  resCode = LostBracket
+  errmsg = "There is no closing doublequote in string. Default string is \"word word ...\"."
   return
 }

@@ -4,59 +4,56 @@ package dictionary
 //   "say"
 // )
 
-func RulePrint(ttail []Token) (correct bool, stopInd int, childs []TokenNode, errmsg string) {
+func RulePrint(ttail []Token) (resCode int, stopInd int, childs []TokenNode, errmsg string) {
   lentt := len(ttail)
-  correct = false
+  resCode = Ok
   stopInd = 0
-  errmsg = "Print default form is '\\print{var, \"str\"}'"
+  errmsg = "Supposed format print{\"string\" decleradVarable ...}."
   if (lentt < 3) {
     errmsg = "Should contain at least one variable. " + errmsg
     return
   } else {
     if ttail[0].Id != CurlyBracketOpen {
-      errmsg = "There is no open bracket. " + errmsg
+      resCode = LostBracket
+      errmsg = "There is no open curly bracket. " + errmsg
       return
     } else {
       childs = append(childs, TokenNode{ttail[0], nil})
       stopInd = 1
       for stopInd < lentt {
         if ttail[stopInd].Id == DoubleQuote {
-          ok, sind, chch, erms := RuleString(ttail[stopInd:])
-          if ok {
-            strval := ""
-            for itch := 0; itch < len(chch); itch++ {
-              if chch[itch].This.Id == Word {
-                strval += chch[itch].This.ValueStr
-              } else {
-                strval += chch[itch].This.IdName
-              }
-            }
-            stopInd += sind
-            childs = append(childs,
-              TokenNode{Token{ String, "string", 0, 0, strval},
-              nil})
-            // say.L0("Indx in print: ", stopInd, "\n")
+          chStopIndx := 0
+          chtoken := TokenNode{}
+          cherrmsg := ""
+          resCode, chStopIndx, chtoken, cherrmsg = RuleString(ttail[stopInd:])
+          if resCode == Ok {
+            stopInd += chStopIndx
+            childs = append(childs, chtoken)
           } else {
-            errmsg = erms
+            errmsg = cherrmsg
             return
           }
-        // } else if other possible objects for print{
-        // }
         } else if ttail[stopInd].Id == CurlyBracketClose {
-          correct = true
+          resCode = Ok
           childs = append(childs, TokenNode{ttail[stopInd], nil})
-          errmsg = ""
           return
+        } else if ttail[stopInd].Id == CarriageReturn {
+          // do nothing
         } else {
-          correct = false
+          resCode = UnexpectableArgument
           stopInd = stopInd
-          errmsg = "Cannot use " + ttail[stopInd].IdName + " in print. " + errmsg
+          if ttail[stopInd].Id == Word {
+            errmsg = "Undefined token [ " + ttail[stopInd].ValueStr + " ]. " + errmsg
+          } else {
+            errmsg = "Undefined token [ " + ttail[stopInd].IdName + " ]. " + errmsg
+          }
           return
         }
         stopInd += 1
       }
     }
   }
-  errmsg = "There is no closing curly bracket in print. " + errmsg
+  resCode = LostBracket
+  errmsg = "There is no closing curly bracket. " + errmsg
   return
 }

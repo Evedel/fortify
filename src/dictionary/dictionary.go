@@ -1,9 +1,7 @@
 package dictionary
 
-import("say")
-
 // all the possible words
-const (
+const(
   Program    = iota
   Expression = iota
 
@@ -48,7 +46,7 @@ var SpecialSymbol = map[string]int{
   "," : Comma,
   " " : Space }
 
-var NeedbeMerroredReverse = map [int]string{
+var NeedbeMerroredReverse = map[int]string{
   CurlyBracketOpen  : "{",
   CurlyBracketClose : "}",
   CommentAll        : "#" }
@@ -56,7 +54,7 @@ var NeedbeMerroredReverse = map [int]string{
 var KeyWordRawReverse = map[int]string{}
 var KeyWordRaw  = map[string]int{
   "print": Print,
-  "var": DeclarationVar }
+  "var ": DeclarationVar }
 
 var KeyWordBackslashReverse = map[int]string{}
 var KeyWordBackslash  = map[string]int{
@@ -81,26 +79,4 @@ type Token struct {
 type TokenNode struct {
   This Token
   List []TokenNode
-}
-
-func Init() {
-  for key := range SpecialSymbol {
-    SpecialSymbolReverse[SpecialSymbol[key]] = key
-  }
-  for key := range KeyWordRaw {
-    KeyWordRawReverse[KeyWordRaw[key]] = key
-  }
-  for key := range DataObject {
-    DataObjectReverse[DataObject[key]] = key
-  }
-  for key := range KeyWordBackslash {
-    KeyWordBackslashReverse[KeyWordBackslash[key]] = key
-  }
-}
-
-func PrintSyntaxTree(TokenTree TokenNode, level string) {
-  say.L0(level + "> ", TokenTree.This, "\n")
-  for ttch := range TokenTree.List {
-    PrintSyntaxTree(TokenTree.List[ttch], level + "|--")
-  }
 }

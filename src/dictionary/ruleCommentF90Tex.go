@@ -4,8 +4,10 @@ package dictionary
 //   "say"
 // )
 
-func ruleCommentF90Tex(ttail []Token) (correct bool, stopInd int, childs []TokenNode, errmsg string) {
+func ruleCommentF90Tex(ttail []Token) (resCode int, stopInd int, childs []TokenNode, errmsg string) {
   indexInternal := 0
+  indexChild := 0
+  chchilds := []TokenNode{}
   for indexInternal < len(ttail) {
     if ttail[indexInternal].Id == CarriageReturn {
       childs = append(
@@ -13,17 +15,18 @@ func ruleCommentF90Tex(ttail []Token) (correct bool, stopInd int, childs []Token
         TokenNode{
           Token{ Expression, "expression", 0, 0, ""},
           append([]TokenNode{}, TokenNode{Token{ CarriageReturn, "\\n", 0, 0, ""}, nil})})
-      correct = true
+      resCode = Ok
       stopInd = indexInternal
       errmsg = ""
       return
     } else {
-      ok, is, chch, erms := RuleExpression(ttail[indexInternal:])
-      if ok {
-        childs = append(childs, TokenNode{Token{ Expression, "expression", 0, 0, ""}, chch})
-        indexInternal += is
+      resCode, indexChild, chchilds, errmsg = RuleExpression(ttail[indexInternal:])
+      if resCode == Ok {
+        childs = append(
+          childs,
+          TokenNode{Token{ Expression, "expression", 0, 0, ""}, chchilds})
+        indexInternal += indexChild
       } else {
-        errmsg = erms
         return
       }
     }

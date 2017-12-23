@@ -4,6 +4,7 @@ import (
   "say"
   "dictionary"
 
+  "sort"
   "os/exec"
   "io/ioutil"
 )
@@ -45,7 +46,7 @@ func toLatex(SyntaxTree dictionary.TokenNode) (Result string) {
       }
       Result += "\\}"
     } else if tnchid == dictionary.DeclarationVar {
-      Result += "\\text{\\textbf{var}}"
+      Result += "\\text{\\textbf{var} }"
       for ttch := range tnchlist {
         Result += toLatex(tnchlist[ttch])
       }
@@ -63,10 +64,17 @@ func toFortran(SyntaxTree dictionary.TokenNode) (Result string) {
   tnid := tn.This.Id
 
   if tnid == dictionary.Program {
-    for varkey, vartype := range dictionary.Variables {
-      if vartype == dictionary.VariableInt { Result += "\t integer :: " + varkey + "\n" }
-      if vartype == dictionary.VariableFloat { Result += "\t real(8) :: " + varkey  + "\n" }
-      if vartype == dictionary.VariableString { Result += "\t character (len=256) :: " + varkey  + "\n" }
+    var sortedkeys []string
+    for k := range dictionary.Variables {
+        sortedkeys = append(sortedkeys, k)
+    }
+    sort.Strings(sortedkeys)
+    for i := range sortedkeys {
+      varkey := sortedkeys[i]
+      vartype := dictionary.Variables[varkey]
+      if vartype == dictionary.VariableInt { Result += "\tinteger :: " + varkey + "\n" }
+      if vartype == dictionary.VariableFloat { Result += "\treal(8) :: " + varkey  + "\n" }
+      if vartype == dictionary.VariableString { Result += "\tcharacter (len=256) :: " + varkey  + "\n" }
     }
     for ttch := range SyntaxTree.List {
       Result += toFortran(SyntaxTree.List[ttch])

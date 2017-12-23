@@ -1,7 +1,11 @@
 
 \Kernel = m4
 
-var h_{fac}, dim, t_{finish}, \gamma, D, dr, \rho_0, P_0
+var{
+  h_{fac} dim t_{finish} \gamma D dr \rho_0 P_0
+  x n v dv h \rho m P u c
+  t dt tx tv tdv tu kdt
+}
 
 h_{fac}    = 1.2
 dim        = 3
@@ -13,8 +17,6 @@ dr   = [0.001, 0, 0]
 
 \rho_0 = 1.
 P_0    = 1.
-
-var x, n, v, dv, h, \rho, m, P, u, c
 
 x, n  = \PlaceParticles{D, dr, 'uniform'}
 
@@ -28,8 +30,6 @@ x, n  = \PlaceParticles{D, dr, 'uniform'}
   u_a    = P_0/(\gamma-1)/\rho_a
   c_a    = 1.
 \}
-
-var t, dt, tx, tv, tdv, tu, kdt
 
 t  = 0.
 dt = 0.

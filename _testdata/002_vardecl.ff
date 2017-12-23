@@ -1,27 +1,78 @@
-var a
-\text{\textbf{var}}\text{ }\text{a}\\&
- double :: a
+T{
+  var a
+}L{
+  \text{\textbf{var} }\text{a}\\
+  &
+}F{
+  real(8) :: a
+}
 
-var a b
-\text{\textbf{var}}\text{ }\text{a}\text{ }\text{b}\\&
- double :: a double :: b
+T{
+  var a b
+}L{
+  \text{\textbf{var} }\text{a}\text{ }\text{b}\\
+  &
+}F{
+  real(8) :: a
+  real(8) :: b
+}
 
-vara b
--1
--1
+T{
+  vara b
+}L{
+  NotALanguageKeyWord
+}F{
+  NotALanguageKeyWord
+}
 
-var ab
-\text{\textbf{var}}\text{ }\text{ab}\\&
-double :: ab
+T{
+  var ab
+}L{
+  \text{\textbf{var} }\text{ab}\\
+  &
+}F{
+  real(8) :: ab
+}
 
-var a a
--1
--1
+T{
+  var a a
+}L{
+  AlreadyDeclared
+}F{
+  AlreadyDeclared
+}
 
-var { }
--1
--1
+T{
+  var { }
+}L{
+  UnexpectableArgument
+}F{
+  UnexpectableArgument
+}
 
-var print
--1
--1
+T{
+  var print
+}L{
+  UnexpectableArgument
+}F{
+  UnexpectableArgument
+}
+
+T{
+  var testvar vartest
+}L{
+  \text{\textbf{var} }\text{testvar}\text{ }\text{vartest}\\
+  &
+}F{
+  real(8) :: testvar
+  real(8) :: vartest
+}
+
+T{
+  var testvar
+}L{
+  \text{\textbf{var} }\text{testvar}\\
+  &
+}F{
+  real(8) :: testvar
+}

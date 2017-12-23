@@ -1,43 +1,88 @@
-print{"This Is Print For Fortran And LaTeX"}
-\text{\textbf{print}}\{\text{"This Is Print For Fortran And LaTeX"}\}\\&
-print*, "This Is Print For Fortran And LaTeX"
+T{
+  print{"This Is Print For Fortran And LaTeX"}
+}L{
+  \text{\textbf{print}}\{\text{"This Is Print For Fortran And LaTeX"}\}\\
+  &
+}F{
+  print*, "This Is Print For Fortran And LaTeX"
+}
 
-print"This Is Print For Fortran And LaTeX"}
--1
--1
+T{
+  print"This Is Print For Fortran And LaTeX"}
+}L{
+  LostBracket
+}F{
+  LostBracket
+}
 
-print{This Is Print For Fortran And LaTeX"}
--1
--1
+T{
+  print{This Is Print For Fortran And LaTeX"}
+}L{
+  UnexpectableArgument
+}F{
+  UnexpectableArgument
+}
 
-print{"This Is Print For Fortran And LaTeX}
--1
--1
+T{
+  print{"This Is Print For Fortran And LaTeX}
+}L{
+  LostBracket
+}F{
+  LostBracket
+}
 
-print{"This Is Print For Fortran And LaTeX"
--1
--1
+T{
+  print{"This Is Print For Fortran And LaTeX"
+}L{
+  LostBracket
+}F{
+  LostBracket
+}
 
-printThis Is Print For Fortran And LaTeX"}
--1
--1
+T{
+  printThis Is Print For Fortran And LaTeX"}
+}L{
+  LostBracket
+}F{
+  LostBracket
+}
 
-print"This Is Print For Fortran And LaTeX}
--1
--1
+T{
+  print"This Is Print For Fortran And LaTeX}
+}L{
+  LostBracket
+}F{
+  LostBracket
+}
 
-print{This Is Print For Fortran And LaTeX"
--1
--1
+T{
+  print{This Is Print For Fortran And LaTeX"
+}L{
+  UnexpectableArgument
+}F{
+  UnexpectableArgument
+}
 
-print{This Is Print For Fortran And LaTeX}
--1
--1
+T{
+  print{This Is Print For Fortran And LaTeX}
+}L{
+  UnexpectableArgument
+}F{
+  UnexpectableArgument
+}
 
-print"This Is Print For Fortran And LaTeX"
--1
--1
+T{
+  print"This Is Print For Fortran And LaTeX"
+}L{
+  LostBracket
+}F{
+  LostBracket
+}
 
-rint{"This Is Print For Fortran And LaTeX"}
--1
--1
+T{
+  rint{"This Is Print For Fortran And LaTeX"}
+}L{
+  NotALanguageKeyWord
+}F{
+  NotALanguageKeyWord
+}

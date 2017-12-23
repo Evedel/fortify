@@ -1,0 +1,10 @@
+T{
+  var a
+  a = 1
+}L{
+  \text{\textbf{var} }\text{a}\\&
+  \text{a = 1}\\&
+}F{
+  real(8) :: a
+  a = 1
+}

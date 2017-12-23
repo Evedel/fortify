@@ -4,14 +4,14 @@ package dictionary
 //   "say"
 // )
 
-func ruleCommentAll(ttail []Token) (correct bool, stopInd int, childs []TokenNode, errmsg string) {
+func ruleCommentAll(ttail []Token) (resCode int, stopInd int, childs []TokenNode, errmsg string) {
+  resCode = Ok
   indexInternal := 0
   strval := ""
+  errmsg = ""
   for indexInternal < len(ttail) {
     if ttail[indexInternal].Id == CarriageReturn {
-      correct = true
       stopInd = indexInternal
-      errmsg = ""
       childs = append(
         childs,
         TokenNode{

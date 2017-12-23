@@ -1,23 +1,48 @@
-% print{"Fortran"}
--
-print*, "Fortran"
+T{
+  % print{"Fortran"}
+}L{
+  -
+}F{
+  print*, "Fortran"
+}
 
-! print{"Fortran"}
-\text{ }\text{\textbf{print}}\{\text{"Fortran"}\}\\&
--
+T{
+  ! print{"Fortran"}
+}L{
+  \text{ }\text{\textbf{print}}\{\text{"Fortran"}\}\\
+  &
+}F{
+  -
+}
 
-# print{"Fortran"}
--
--
+T{
+  # print{"Fortran"}
+}L{
+  -
+}F{
+  -
+}
 
-% Fortran
--1
--1
+T{
+  % Fortran
+}L{
+  NotALanguageKeyWord
+}F{
+  NotALanguageKeyWord
+}
 
-! Fortran
--1
--1
+T{
+  ! Fortran
+}L{
+  NotALanguageKeyWord
+}F{
+  NotALanguageKeyWord
+}
 
-# Fortran
--
--
+T{
+  # Fortran
+}L{
+  -
+}F{
+  -
+}
