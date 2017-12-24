@@ -7,11 +7,11 @@ import (
 	"strings"
 	"io/ioutil"
 
-	"say"
-	"lexer"
-	"compile"
-	"syntaxer"
-	"dictionary"
+	"github.com/Evedel/fortify/src/say"
+	"github.com/Evedel/fortify/src/lexer"
+	"github.com/Evedel/fortify/src/compile"
+	"github.com/Evedel/fortify/src/syntaxer"
+	"github.com/Evedel/fortify/src/dictionary"
 )
 
 func main() {

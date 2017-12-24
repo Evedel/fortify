@@ -3,7 +3,7 @@ package syntaxer
 import(
   // "say"
 
-  "dictionary"
+  "github.com/Evedel/fortify/src/dictionary"
 )
 
 func BuildTree(Tokenised []dictionary.Token) (TokenTree dictionary.TokenNode, resCode int, errmsg string) {

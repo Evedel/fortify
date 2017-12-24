@@ -1,7 +1,7 @@
 package compile
 
 import(
-  "dictionary"
+  "github.com/Evedel/fortify/src/dictionary"
 )
 const (
   ltfort = 0

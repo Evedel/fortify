@@ -6,10 +6,10 @@ import(
   "io/ioutil"
   "strings"
 
-  "say"
-  "lexer"
-  "syntaxer"
-  "dictionary"
+  "github.com/Evedel/fortify/src/say"
+	"github.com/Evedel/fortify/src/lexer"
+	"github.com/Evedel/fortify/src/syntaxer"
+	"github.com/Evedel/fortify/src/dictionary"
 )
 
 func TestExpression(t *testing.T) {

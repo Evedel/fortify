@@ -1,7 +1,7 @@
 package dictionary
 
 // import (
-//   "say"
+//   "github.com/Evedel/fortify/src/say"
 // )
 
 func typeString(ttail []Token) (resCode int, stopInd int, resToken TokenNode, errmsg string) {

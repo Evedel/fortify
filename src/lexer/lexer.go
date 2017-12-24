@@ -2,7 +2,7 @@ package lexer
 
 import (
   // "say"
-  "dictionary"
+  "github.com/Evedel/fortify/src/dictionary"
 
   // "unicode"
 )

@@ -1,14 +1,14 @@
 package dictionary
 
 import (
-  // "say"
+  // "github.com/Evedel/fortify/src/say"
   "strconv"
 )
 
 func typeNumber(ttail []Token) (resCode int, stopInd int, resToken TokenNode, errmsg string) {
   resCode = UndefinedError
   stopInd = 1
-  
+
   tokval := ttail[0].Value
 
   _, errF := strconv.ParseFloat(tokval, 64)

@@ -1,8 +1,8 @@
 package compile
 
 import (
-  "say"
-  "dictionary"
+  "github.com/Evedel/fortify/src/say"
+  "github.com/Evedel/fortify/src/dictionary"
 
   "sort"
   "os/exec"
