@@ -1,7 +1,7 @@
 package dictionary
 
 // import (
-//   "say"
+//   "github.com/Evedel/fortify/src/say"
 // )
 
 func RuleExpression(ttail []Token) (resCode int, stopInd int, childs []TokenNode, errmsg string) {

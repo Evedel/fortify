@@ -3,7 +3,6 @@ package say
 import(
   "github.com/fatih/color"
 
-  // "os"
   "fmt"
   "time"
   "strconv"

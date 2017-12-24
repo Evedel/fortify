@@ -1,6 +1,8 @@
 package dictionary
 
-import("say")
+import(
+  "github.com/Evedel/fortify/src/say"
+)
 
 func Init() {
   for key := range SpecialSymbol {
