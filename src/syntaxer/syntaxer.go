@@ -8,7 +8,7 @@ import(
 
 func BuildTree(Tokenised []dictionary.Token) (TokenTree dictionary.TokenNode, resCode int, errmsg string) {
   resCode = dictionary.UndefinedError
-  TokenTree.This = dictionary.Token{dictionary.Program, "program", 0, 0, ""}
+  TokenTree.This = dictionary.Token{dictionary.Program, "program", ""}
   indx := 0
   stopIndx := 0
   errmsg = ""
@@ -20,7 +20,7 @@ func BuildTree(Tokenised []dictionary.Token) (TokenTree dictionary.TokenNode, re
       TokenTree.List = append(TokenTree.List,
         dictionary.TokenNode{
           dictionary.Token {
-            dictionary.Expression, "expression", 0, 0, ""},
+            dictionary.Expression, "expression", ""},
             chchilds})
       indx += stopIndx + 1
     } else {

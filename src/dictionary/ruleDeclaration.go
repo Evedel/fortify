@@ -14,19 +14,19 @@ func ruleDeclaration(ttail []Token) (resCode int, stopInd int, childs []TokenNod
       childs = append(
         childs,
         TokenNode{
-          Token{ Expression, "expression", 0, 0, ""},
-          append([]TokenNode{}, TokenNode{Token{ CarriageReturn, "\\n", 0, 0, ""}, nil})})
+          Token{ Expression, "expression", ""},
+          append([]TokenNode{}, TokenNode{Token{ CarriageReturn, "\\n", ""}, nil})})
       stopInd = indexInternal
       return
     } else if ttail[indexInternal].Id == Word {
-      wordstr := ttail[indexInternal].ValueStr
+      wordstr := ttail[indexInternal].Value
       if _, ok := Variables[wordstr]; !ok {
-        Variables[wordstr] = VariableFloat
+        Variables[wordstr] = Float
         childs = append(
           childs,
           TokenNode{
-            Token{ Expression, "expression", 0, 0, ""},
-            append([]TokenNode{}, TokenNode{Token{ VariableId, "VarId", VariableFloat, 0, wordstr}, nil})})
+            Token{ Expression, "expression", ""},
+            append([]TokenNode{}, TokenNode{Token{ VariableId, "VarId", wordstr}, nil})})
       } else {
         resCode = AlreadyDeclared
         stopInd = indexInternal
@@ -37,10 +37,10 @@ func ruleDeclaration(ttail []Token) (resCode int, stopInd int, childs []TokenNod
       childs = append(
         childs,
         TokenNode{
-          Token{ Expression, "expression", 0, 0, ""},
+          Token{ Expression, "expression", ""},
           append([]TokenNode{}, TokenNode{ttail[indexInternal], nil})})
     } else {
-      resCode = UnexpectableArgument
+      resCode = UnexpectedArgument
       stopInd = indexInternal
       errmsg = "It is not allowed to use key word [ " + ttail[indexInternal].IdName + " ] as variable."
       return

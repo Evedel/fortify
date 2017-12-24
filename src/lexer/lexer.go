@@ -52,7 +52,6 @@ func Tokenise(source string) (Tokenised []dictionary.Token) {
             dictionary.Token{
               dictionary.Word,
               "word",
-              0, 0,
               word[:backpos]})
           break
         }
@@ -64,9 +63,7 @@ func Tokenise(source string) (Tokenised []dictionary.Token) {
 
       t.Id = dictionary.None
       t.IdName = "None"
-      t.ValueInt = 0
-      t.ValueFlt = 0.0
-      t.ValueStr = ""
+      t.Value = ""
 
       word = ""
     }

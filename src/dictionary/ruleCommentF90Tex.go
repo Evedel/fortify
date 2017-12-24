@@ -13,8 +13,8 @@ func ruleCommentF90Tex(ttail []Token) (resCode int, stopInd int, childs []TokenN
       childs = append(
         childs,
         TokenNode{
-          Token{ Expression, "expression", 0, 0, ""},
-          append([]TokenNode{}, TokenNode{Token{ CarriageReturn, "\\n", 0, 0, ""}, nil})})
+          Token{ Expression, "expression", ""},
+          append([]TokenNode{}, TokenNode{Token{ CarriageReturn, "\\n", ""}, nil})})
       resCode = Ok
       stopInd = indexInternal
       errmsg = ""
@@ -24,7 +24,7 @@ func ruleCommentF90Tex(ttail []Token) (resCode int, stopInd int, childs []TokenN
       if resCode == Ok {
         childs = append(
           childs,
-          TokenNode{Token{ Expression, "expression", 0, 0, ""}, chchilds})
+          TokenNode{Token{ Expression, "expression", ""}, chchilds})
         indexInternal += indexChild
       } else {
         return

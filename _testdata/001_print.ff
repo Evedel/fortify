@@ -18,9 +18,9 @@ T{
 T{
   print{This Is Print For Fortran And LaTeX"}
 }L{
-  UnexpectableArgument
+  UnexpectedArgument
 }F{
-  UnexpectableArgument
+  UnexpectedArgument
 }
 
 T{
@@ -58,17 +58,17 @@ T{
 T{
   print{This Is Print For Fortran And LaTeX"
 }L{
-  UnexpectableArgument
+  UnexpectedArgument
 }F{
-  UnexpectableArgument
+  UnexpectedArgument
 }
 
 T{
   print{This Is Print For Fortran And LaTeX}
 }L{
-  UnexpectableArgument
+  UnexpectedArgument
 }F{
-  UnexpectableArgument
+  UnexpectedArgument
 }
 
 T{
@@ -85,4 +85,53 @@ T{
   NotALanguageKeyWord
 }F{
   NotALanguageKeyWord
+}
+
+T{
+  var a
+  a = 1
+  print{a}
+}L{
+  \text{\textbf{var} }\text{a}\\
+  &\text{a}\text{ } = \text{ }\text{1}\\
+  &\text{\textbf{print}}\{\text{a}\}\\
+  &
+}F{
+  real(8) :: a
+	a = 1
+	print*, a
+}
+
+T{
+  var a
+  a = 1
+  print{"a: " a}
+}L{
+  \text{\textbf{var} }\text{a}\\
+  &\text{a}\text{ } = \text{ }\text{1}\\
+  &\text{\textbf{print}}\{\text{"a: " a}\}\\
+  &
+}F{
+  real(8) :: a
+	a = 1
+	print*, "a: ", a
+}
+
+T{
+  var a b
+  a = 1
+  b = 2
+  print{b a}
+}L{
+  \text{\textbf{var} }\text{a}\text{ }\text{b}\\
+  &\text{a}\text{ } = \text{ }\text{1}\\
+  &\text{b}\text{ } = \text{ }\text{2}\\
+  &\text{\textbf{print}}\{\text{b a}\}\\
+  &
+}F{
+  real(8) :: a
+	real(8) :: b
+	a = 1
+	b = 2
+	print*, b, a
 }

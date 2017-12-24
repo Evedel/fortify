@@ -25,7 +25,7 @@ func RulePrint(ttail []Token) (resCode int, stopInd int, childs []TokenNode, err
           chStopIndx := 0
           chtoken := TokenNode{}
           cherrmsg := ""
-          resCode, chStopIndx, chtoken, cherrmsg = RuleString(ttail[stopInd:])
+          resCode, chStopIndx, chtoken, cherrmsg = typeString(ttail[stopInd:])
           if resCode == Ok {
             stopInd += chStopIndx
             childs = append(childs, chtoken)
@@ -33,20 +33,28 @@ func RulePrint(ttail []Token) (resCode int, stopInd int, childs []TokenNode, err
             errmsg = cherrmsg
             return
           }
+        } else if ttail[stopInd].Id == Space {
+          childs = append(childs, GetSpaceTokenNode())
         } else if ttail[stopInd].Id == CurlyBracketClose {
           resCode = Ok
           childs = append(childs, TokenNode{ttail[stopInd], nil})
+          // PrintSyntaxTree(TokenNode{Token{}, childs}, "")
           return
         } else if ttail[stopInd].Id == CarriageReturn {
           // do nothing
-        } else {
-          resCode = UnexpectableArgument
-          stopInd = stopInd
-          if ttail[stopInd].Id == Word {
-            errmsg = "Undefined token [ " + ttail[stopInd].ValueStr + " ]. " + errmsg
+        } else if ttail[stopInd].Id == Word {
+          if _, ok := Variables[ttail[stopInd].Value]; ok {
+            childs = append(childs, ToVarIdTokenNode(ttail[stopInd]))
           } else {
+            resCode = UnexpectedArgument
+            stopInd = stopInd
             errmsg = "Undefined token [ " + ttail[stopInd].IdName + " ]. " + errmsg
+            return
           }
+        } else {
+          resCode = UnexpectedArgument
+          stopInd = stopInd
+          errmsg = "Undefined token [ " + ttail[stopInd].IdName + " ]. " + errmsg
           return
         }
         stopInd += 1

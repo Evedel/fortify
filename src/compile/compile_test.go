@@ -37,8 +37,7 @@ func TestExpression(t *testing.T) {
           dictionary.Variables = make(map[string]int)
           i += 1
           for lines[i] != "}L{" {
-            inputScr += lines[i] + "\n"
-            if inputScr[:2] == "  " { inputScr = inputScr[2:]}
+            inputScr += strings.TrimSpace(lines[i]) + "\n"
             i += 1
           }
           i += 1

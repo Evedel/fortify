@@ -4,7 +4,7 @@ package dictionary
 //   "say"
 // )
 
-func RuleString(ttail []Token) (resCode int, stopInd int, resToken TokenNode, errmsg string) {
+func typeString(ttail []Token) (resCode int, stopInd int, resToken TokenNode, errmsg string) {
   lentt := len(ttail)
   resCode = UndefinedError
   stopInd = 0
@@ -26,12 +26,12 @@ func RuleString(ttail []Token) (resCode int, stopInd int, resToken TokenNode, er
         strval := ""
         for itch := 0; itch < len(childs); itch++ {
           if childs[itch].This.Id == Word {
-            strval += childs[itch].This.ValueStr
+            strval += childs[itch].This.Value
           } else {
             strval += childs[itch].This.IdName
           }
         }
-        resToken = TokenNode{Token{ String, "string", 0, 0, strval}, nil}
+        resToken = TokenNode{Token{ String, "string", strval}, nil}
         return
       }
       ich += 1

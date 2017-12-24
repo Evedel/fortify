@@ -8,19 +8,25 @@ const(
   LostBracket = iota
 
   NotALanguageKeyWord = iota
-  UnexpectableArgument = iota
+  UnexpectedArgument = iota
+  NotANumber = iota
 
   UndefinedError = iota
+
+  TOTOTODO = iota
 )
 
 var ErrorCodeDefinitions = map[int]string{
   Ok : "Ok",
 
   AlreadyDeclared: "AlreadyDeclared",
-  
+
   LostBracket: "LostBracket",
 
   NotALanguageKeyWord: "NotALanguageKeyWord",
-  UnexpectableArgument : "UnexpectableArgument",
+  UnexpectedArgument : "UnexpectedArgument",
+  NotANumber: "NotANumber",
 
-  UndefinedError: "UndefinedError" }
+  UndefinedError: "UndefinedError",
+
+  TOTOTODO: "TOTOTODO" }

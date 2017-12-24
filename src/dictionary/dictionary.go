@@ -20,15 +20,14 @@ const(
   CurlyBracketOpen  = iota
   CurlyBracketClose = iota
 
-  NumberInt = iota
-  NumberFlt = iota
-  Word      = iota
-  String    = iota
+  Assignment = iota
+
+  Int    = iota
+  Float  = iota
+  Word   = iota
+  String = iota
 
   VariableId     = iota
-  VariableInt    = iota
-  VariableFloat  = iota
-  VariableString = iota
 
   Print          = iota
   DeclarationVar = iota
@@ -44,7 +43,8 @@ var SpecialSymbol = map[string]int{
   "{" : CurlyBracketOpen,
   "}" : CurlyBracketClose,
   "," : Comma,
-  " " : Space }
+  " " : Space,
+  "=" : Assignment }
 
 var NeedbeMerroredReverse = map[int]string{
   CurlyBracketOpen  : "{",
@@ -71,9 +71,7 @@ var Variables = map[string]int{}
 type Token struct {
   Id int
   IdName string
-  ValueInt int
-  ValueFlt float64
-  ValueStr string
+  Value string
 }
 
 type TokenNode struct {

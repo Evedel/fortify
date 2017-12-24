@@ -45,17 +45,17 @@ T{
 T{
   var { }
 }L{
-  UnexpectableArgument
+  UnexpectedArgument
 }F{
-  UnexpectableArgument
+  UnexpectedArgument
 }
 
 T{
   var print
 }L{
-  UnexpectableArgument
+  UnexpectedArgument
 }F{
-  UnexpectableArgument
+  UnexpectedArgument
 }
 
 T{

@@ -15,12 +15,12 @@ func ruleCommentAll(ttail []Token) (resCode int, stopInd int, childs []TokenNode
       childs = append(
         childs,
         TokenNode{
-          Token{String, "string", 0, 0, strval},
+          Token{String, "string", strval},
           nil})
       return
     } else {
       if ttail[indexInternal].Id == Word {
-        strval += ttail[indexInternal].ValueStr
+        strval += ttail[indexInternal].Value
       } else {
         strval += ttail[indexInternal].IdName
       }

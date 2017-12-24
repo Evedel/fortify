@@ -23,3 +23,21 @@ func PrintSyntaxTree(TokenTree TokenNode, level string) {
     PrintSyntaxTree(TokenTree.List[ttch], level + "|--")
   }
 }
+
+func GetRNTokenNode() (TokenNode) {
+  return TokenNode{ Token{ CarriageReturn, "\\n", "" }, nil}
+}
+
+func GetExpressionTokenNode() (TokenNode) {
+  return TokenNode{
+    Token{ Expression, "expression", ""},
+    []TokenNode{}}
+}
+
+func GetSpaceTokenNode() (TokenNode) {
+  return TokenNode{ Token{ Space, " ", " " }, nil}
+}
+
+func ToVarIdTokenNode(t Token) (TokenNode) {
+  return TokenNode{Token{VariableId, "VarId", t.Value}, nil}
+}

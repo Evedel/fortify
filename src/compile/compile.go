@@ -17,43 +17,48 @@ func toLatex(SyntaxTree dictionary.TokenNode) (Result string) {
       Result += toLatex(SyntaxTree.List[ttch])
     }
   } else if tnid == dictionary.Expression {
-    tnchid := tn.List[0].This.Id
-    tnchlist := tn.List[0].List
-    tnchidnm := tn.List[0].This.IdName
-    tnchidst := tn.List[0].This.ValueStr
+    for i := range tn.List {
+      tnchid := tn.List[i].This.Id
+      tnchval := tn.List[i].This.Value
+      tnchidnm := tn.List[i].This.IdName
+      tnchlist := tn.List[i].List
 
-    if (tnchid == dictionary.CommentAll)  ||
-        (tnchid == dictionary.CommentTex) {
-      //------------//
-      // do nothing //
-      //------------//
-    } else if tnchid == dictionary.CarriageReturn {
-      Result += "\\\\\n&"
-    } else if tnchid == dictionary.CommentF90 {
-      for ttch := range tnchlist {
-        Result += toLatex(tnchlist[ttch])
-      }
-    } else if _, ok := dictionary.SpecialSymbolReverse[tnchid]; ok {
-      if _, ok2 := dictionary.NeedbeMerroredReverse[tnchid]; ok2 {
-        Result += "\\text{\\" + tnchidnm + "}"
+      if (tnchid == dictionary.CommentAll)  ||
+          (tnchid == dictionary.CommentTex) {
+        //------------//
+        // do nothing //
+        //------------//
+      } else if tnchid == dictionary.CarriageReturn {
+        Result += "\\\\\n&"
+      } else if tnchid == dictionary.CommentF90 {
+        for ttch := range tnchlist {
+          Result += toLatex(tnchlist[ttch])
+        }
+      } else if tnchid == dictionary.Print {
+        Result += "\\text{\\textbf{print}}\\{\\text{"
+        for i := 1; i < len(tnchlist)-1; i++ {
+          Result += tnchlist[i].This.Value
+        }
+        Result += "}\\}"
+      } else if tnchid == dictionary.DeclarationVar {
+        Result += "\\text{\\textbf{var} }"
+        for ttch := range tnchlist {
+          Result += toLatex(tnchlist[ttch])
+        }
+      } else if (tnchid == dictionary.VariableId) ||
+          (tnchid == dictionary.Int) {
+        Result += "\\text{" + tnchval + "}"
+      } else if tnchid == dictionary.Assignment {
+        Result += toLatex(tnchlist[0]) + " = " + toLatex(tnchlist[1])
+      } else if _, ok := dictionary.SpecialSymbolReverse[tnchid]; ok {
+        if _, ok2 := dictionary.NeedbeMerroredReverse[tnchid]; ok2 {
+          Result += "\\text{\\" + tnchidnm + "}"
+        } else {
+          Result += "\\text{" + tnchidnm + "}"
+        }
       } else {
-        Result += "\\text{" + tnchidnm + "}"
+        say.L3("There is no defined Latex compiler rules for [" + tnchidnm + "]", "", "\n")
       }
-    } else if tnchid == dictionary.Print {
-      Result += "\\text{\\textbf{print}}\\{"
-      for i := 1; i < len(tnchlist)-1; i++ {
-        Result += "\\text{" + tnchlist[i].This.ValueStr + "}"
-      }
-      Result += "\\}"
-    } else if tnchid == dictionary.DeclarationVar {
-      Result += "\\text{\\textbf{var} }"
-      for ttch := range tnchlist {
-        Result += toLatex(tnchlist[ttch])
-      }
-    } else if tnchid == dictionary.VariableId {
-      Result += "\\text{" + tnchidst + "}"
-    } else {
-      say.L3("There is no defined Latex compiler rules for [" + tnchidnm + "]", "", "\n")
     }
   }
   return
@@ -72,38 +77,51 @@ func toFortran(SyntaxTree dictionary.TokenNode) (Result string) {
     for i := range sortedkeys {
       varkey := sortedkeys[i]
       vartype := dictionary.Variables[varkey]
-      if vartype == dictionary.VariableInt { Result += "\tinteger :: " + varkey + "\n" }
-      if vartype == dictionary.VariableFloat { Result += "\treal(8) :: " + varkey  + "\n" }
-      if vartype == dictionary.VariableString { Result += "\tcharacter (len=256) :: " + varkey  + "\n" }
+      if vartype == dictionary.Int { Result += "\tinteger :: " + varkey + "\n" }
+      if vartype == dictionary.Float { Result += "\treal(8) :: " + varkey  + "\n" }
+      if vartype == dictionary.String { Result += "\tcharacter (len=256) :: " + varkey  + "\n" }
     }
     for ttch := range SyntaxTree.List {
       Result += toFortran(SyntaxTree.List[ttch])
     }
   } else if tnid == dictionary.Expression {
-    tnchid := tn.List[0].This.Id
-    chlist := tn.List[0].List
-    tnchidnm := tn.List[0].This.IdName
+    for i := range tn.List {
+      tnchid := tn.List[i].This.Id
+      tnchval := tn.List[i].This.Value
+      tnchidnm := tn.List[i].This.IdName
+      tnchlist := tn.List[i].List
 
-    if (tnchid == dictionary.CarriageReturn) ||
-        (tnchid == dictionary.Space)         ||
-        (tnchid == dictionary.CommentAll)    ||
-        (tnchid == dictionary.CommentF90)    ||
-        (tnchid == dictionary.DeclarationVar) {
-      //------------//
-      // do nothing //
-      //------------//
-    } else if tnchid == dictionary.CommentTex {
-      for ttch := range tn.List[0].List {
-        Result += toFortran(tn.List[0].List[ttch])
+
+      if (tnchid == dictionary.CarriageReturn) ||
+          (tnchid == dictionary.Space)         ||
+          (tnchid == dictionary.CommentAll)    ||
+          (tnchid == dictionary.CommentF90)    ||
+          (tnchid == dictionary.DeclarationVar) {
+        //------------//
+        // do nothing //
+        //------------//
+      } else if tnchid == dictionary.CommentTex {
+        for ttch := range tnchlist {
+          Result += toFortran(tnchlist[ttch])
+        }
+      } else if tnchid == dictionary.Print {
+        Result += "\t" + "print*, "
+        for i := 1; i < len(tnchlist)-1; i++ {
+          if tnchlist[i].This.Id == dictionary.Space {
+            Result += ", "
+          } else {
+            Result += tnchlist[i].This.Value
+          }
+        }
+        Result += "\n"
+      } else if tnchid == dictionary.Assignment {
+        Result += "\t" + toFortran(tnchlist[0]) + " = " + toFortran(tnchlist[1]) + "\n"
+      } else if (tnchid == dictionary.VariableId) ||
+          (tnchid == dictionary.Int) {
+        Result = tnchval
+      } else {
+        say.L3("There is no defined Fortran compiler rules for [" + tnchidnm + "]", "", "\n")
       }
-    } else if tnchid == dictionary.Print {
-      Result += "\t" + "print*, "
-      for i := 1; i < len(chlist)-1; i++ {
-        Result += chlist[i].This.ValueStr
-      }
-      Result += "\n"
-    } else {
-      say.L3("There is no defined Fortran compiler rules for [" + tnchidnm + "]", "", "\n")
     }
   }
   return
@@ -133,7 +151,7 @@ func toClang(SyntaxTree dictionary.TokenNode) (Result string) {
       }
     } else if tnchid == dictionary.Print {
       for i := 1; i < len(chlist)-1; i++ {
-        Result += "\t" + "printf(" + chlist[i].This.ValueStr + ");\n"
+        Result += "\t" + "printf(" + chlist[i].This.Value + ");\n"
       }
     }
   }
@@ -141,6 +159,7 @@ func toClang(SyntaxTree dictionary.TokenNode) (Result string) {
 }
 
 func ToFortran(SyntaxTree dictionary.TokenNode, Name [3]string) {
+  // dictionary.PrintSyntaxTree(SyntaxTree, "")
   strnm := Name
   say.L1("Fortran compile: ", strnm[0], "\n")
   srcnew := "program main\n" +
