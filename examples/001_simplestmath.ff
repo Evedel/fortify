@@ -5,14 +5,17 @@ b = 5
 print{a}
 print{"b" b}
 
-# c = a + b
-# print c
-#
-# c = a*b
-# print c
-#
-# c = a - b
-# print c
-#
-# c = a/b
-# print c
+c = a + b
+print{c}
+
+c = a * b
+print{c}
+
+c = a - b
+print{c}
+
+c = a / b
+print{c}
+
+c = a + b * b / a
+print{c}

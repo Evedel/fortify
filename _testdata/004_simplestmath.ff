@@ -1,0 +1,94 @@
+T{
+  var a b
+  a = 1
+  b = 2
+  a = b + a
+}L{
+  \text{\textbf{var} }\text{a}\text{ }\text{b}\\
+	&\text{a}\text{ } = \text{ }\text{1}\\
+	&\text{b}\text{ } = \text{ }\text{2}\\
+	&\text{a}\text{ } = \text{ }\text{b}\text{ } + \text{ }\text{a}\\
+	&
+}F{
+  real(8) :: a
+	real(8) :: b
+	a = 1
+	b = 2
+	a = b + a
+}
+
+T{
+  var a b
+  a = 1
+  b = 2
+  a = b - a
+}L{
+  \text{\textbf{var} }\text{a}\text{ }\text{b}\\
+	&\text{a}\text{ } = \text{ }\text{1}\\
+	&\text{b}\text{ } = \text{ }\text{2}\\
+	&\text{a}\text{ } = \text{ }\text{b}\text{ } - \text{ }\text{a}\\
+	&
+}F{
+  real(8) :: a
+	real(8) :: b
+	a = 1
+	b = 2
+	a = b - a
+}
+
+T{
+  var a b
+  a = 1
+  b = 2
+  a = b * a
+}L{
+  \text{\textbf{var} }\text{a}\text{ }\text{b}\\
+	&\text{a}\text{ } = \text{ }\text{1}\\
+	&\text{b}\text{ } = \text{ }\text{2}\\
+	&\text{a}\text{ } = \text{ }\text{b}\text{ } * \text{ }\text{a}\\
+	&
+}F{
+  real(8) :: a
+	real(8) :: b
+	a = 1
+	b = 2
+	a = b * a
+}
+
+T{
+  var a b
+  a = 1
+  b = 2
+  a = b / a
+}L{
+  \text{\textbf{var} }\text{a}\text{ }\text{b}\\
+	&\text{a}\text{ } = \text{ }\text{1}\\
+	&\text{b}\text{ } = \text{ }\text{2}\\
+	&\text{a}\text{ } = \text{ }\text{b}\text{ } / \text{ }\text{a}\\
+	&
+}F{
+  real(8) :: a
+	real(8) :: b
+	a = 1
+	b = 2
+	a = b / a
+}
+
+T{
+  var a b
+  a = 1
+  b = 2
+  a = b + a * b - a / b
+}L{
+  \text{\textbf{var} }\text{a}\text{ }\text{b}\\
+	&\text{a}\text{ } = \text{ }\text{1}\\
+	&\text{b}\text{ } = \text{ }\text{2}\\
+  &\text{a}\text{ } = \text{ }\text{b}\text{ } + \text{ }\text{a}\text{ } * \text{ }\text{b}\text{ } - \text{ }\text{a}\text{ } / \text{ }\text{b}\\
+	&
+}F{
+  real(8) :: a
+  real(8) :: b
+	a = 1
+	b = 2
+	a = b + a * b - a / b
+}

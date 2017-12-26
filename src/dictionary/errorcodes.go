@@ -1,32 +1,32 @@
 package dictionary
 
-const(
-  Ok = iota
+const (
+	Ok = iota
 
-  AlreadyDeclared = iota
+	AlreadyDeclared = iota
 
-  LostBracket = iota
+	LostBracket = iota
 
-  NotALanguageKeyWord = iota
-  UnexpectedArgument = iota
-  NotANumber = iota
+	NotALanguageKeyWord = iota
+	UnexpectedArgument  = iota
+	NotANumber          = iota
 
-  UndefinedError = iota
+	UndefinedError = iota
 
-  TOTOTODO = iota
+	TOTOTODO = iota
 )
 
 var ErrorCodeDefinitions = map[int]string{
-  Ok : "Ok",
+	Ok: "Ok",
 
-  AlreadyDeclared: "AlreadyDeclared",
+	AlreadyDeclared: "AlreadyDeclared",
 
-  LostBracket: "LostBracket",
+	LostBracket: "LostBracket",
 
-  NotALanguageKeyWord: "NotALanguageKeyWord",
-  UnexpectedArgument : "UnexpectedArgument",
-  NotANumber: "NotANumber",
+	NotALanguageKeyWord: "NotALanguageKeyWord",
+	UnexpectedArgument:  "UnexpectedArgument",
+	NotANumber:          "NotANumber",
 
-  UndefinedError: "UndefinedError",
+	UndefinedError: "UndefinedError",
 
-  TOTOTODO: "TOTOTODO" }
+	TOTOTODO: "TOTOTODO"}
