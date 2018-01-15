@@ -1,13 +1,13 @@
 package compile
 
-import (
+import(
 	"testing"
 
 	"io/ioutil"
 	"strings"
 )
 
-// import (
+// import(
 // 	"dictionary"
 // 	"lexer"
 // 	"say"
@@ -40,10 +40,16 @@ func TestExpression(t *testing.T) {
 				lines := strings.Split(string(content), "\n")
 				i := 0
 				for i < len(lines) {
+					descr := ""
 					inputScr := ""
 					inputTex := ""
 					inputF90 := ""
 					dictionary.Variables = make(map[string]int)
+					i += 1
+					for lines[i] != "}T{" {
+						descr += strings.TrimSpace(lines[i])
+						i += 1
+					}
 					i += 1
 					for lines[i] != "}L{" {
 						inputScr += strings.TrimSpace(lines[i]) + "\n"
@@ -85,15 +91,15 @@ func TestExpression(t *testing.T) {
 						say.L3(em, "", "\n")
 					}
 					if inputTex != resultTex {
-						say.L1("#", done, " fail <-> ["+f.Name()+"] \n")
-						t.Error("For input: [" + inputScr + "] Latex:\n Expected [" + inputTex + "]\n Got [" + resultTex + "]")
+						say.L1("#", done, "["+f.Name()+"]<->[ " + descr + " ] fail\n")
+						t.Error("For input: [ " + inputScr + " ] Latex:\n Expected [" + inputTex + "]\n Got [" + resultTex + "]")
 						t.FailNow()
 					} else if inputF90 != resultF90 {
-						say.L1("#", done, " fail <-> ["+f.Name()+"] \n")
-						t.Error("For input: [" + inputScr + "] Fortran:\n Expected [" + inputF90 + "]\n Got [" + resultF90 + "]")
+						say.L1("#", done, "["+f.Name()+"]<->[ " + descr + " ] fail\n")
+						t.Error("For input: [ " + inputScr + " ] Fortran:\n Expected [" + inputF90 + "]\n Got [" + resultF90 + "]")
 						t.FailNow()
 					} else {
-						say.L1("#", done, " ok <-> ["+f.Name()+"] \n")
+						say.L1("#", done, "["+f.Name()+"]<->[ " + descr + " ] ok\n")
 						done += 1
 					}
 				}

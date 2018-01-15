@@ -1,4 +1,6 @@
-T{
+D{
+  Variable assignment: simple
+}T{
   var a
   a = 1
 }L{
@@ -10,7 +12,9 @@ T{
   a = 1
 }
 
-T{
+D{
+  Variable assignment: declare "a", assign "b"
+}T{
   var a
   b = 1
 }L{
@@ -19,7 +23,9 @@ T{
   NotALanguageKeyWord
 }
 
-T{
+D{
+  Variable assignment: assignment at declaration
+}T{
   var a = 1
 }L{
   UnexpectedArgument
@@ -27,7 +33,9 @@ T{
   UnexpectedArgument
 }
 
-T{
+D{
+  Variable assignment: assignment without declaration
+}T{
   a = 1
 }L{
   NotALanguageKeyWord

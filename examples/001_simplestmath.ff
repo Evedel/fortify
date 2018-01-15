@@ -2,20 +2,25 @@ var a b c
 
 a = 10
 b = 5
-print{a}
+print{"a" a}
 print{"b" b}
 
 c = a + b
-print{c}
+print{"a+b: " c}
 
 c = a * b
-print{c}
+print{"a*b: " c}
 
 c = a - b
-print{c}
+print{"a-b: " c}
 
 c = a / b
-print{c}
+print{"a/b: " c}
 
 c = a + b * b / a
-print{c}
+print{"a+b*b/a: " c}
+
+
+c = (b + b) * b
+a = b + b * b
+print{"(b+b)*b: " c " b+b*b: " a}

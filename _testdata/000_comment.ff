@@ -1,4 +1,6 @@
-T{
+D{
+  Comment: in tex, print in f90
+}T{
   % print{"Fortran"}
 }L{
   -
@@ -6,7 +8,9 @@ T{
   print*, "Fortran"
 }
 
-T{
+D{
+  Comment: in f90, print in tex
+}T{
   ! print{"Fortran"}
 }L{
   \text{ }\text{\textbf{print}}\{\text{"Fortran"}\}\\
@@ -15,7 +19,9 @@ T{
   -
 }
 
-T{
+D{
+  Comment: everywhere
+}T{
   # print{"Fortran"}
 }L{
   -
@@ -23,7 +29,9 @@ T{
   -
 }
 
-T{
+D{
+  Comment: in tex with wrong keyword (fail)
+}T{
   % Fortran
 }L{
   NotALanguageKeyWord
@@ -31,7 +39,9 @@ T{
   NotALanguageKeyWord
 }
 
-T{
+D{
+  Comment: in f90 with wrong keyword (fail)
+}T{
   ! Fortran
 }L{
   NotALanguageKeyWord
@@ -39,7 +49,9 @@ T{
   NotALanguageKeyWord
 }
 
-T{
+D{
+  Comment: with a non key word for everything (ok)
+}T{
   # Fortran
 }L{
   -

@@ -1,4 +1,6 @@
-T{
+D{
+  Variable declaration: simple
+}T{
   var a
 }L{
   \text{\textbf{var} }\text{a}\\
@@ -7,7 +9,9 @@ T{
   real(8) :: a
 }
 
-T{
+D{
+  Variable declaration: multiple variables
+}T{
   var a b
 }L{
   \text{\textbf{var} }\text{a}\text{ }\text{b}\\
@@ -17,7 +21,9 @@ T{
   real(8) :: b
 }
 
-T{
+D{
+  Variable declaration: wrong keyword
+}T{
   vara b
 }L{
   NotALanguageKeyWord
@@ -25,7 +31,9 @@ T{
   NotALanguageKeyWord
 }
 
-T{
+D{
+  Variable declaration: word not char
+}T{
   var ab
 }L{
   \text{\textbf{var} }\text{ab}\\
@@ -34,7 +42,9 @@ T{
   real(8) :: ab
 }
 
-T{
+D{
+  Variable declaration: second declaration of the same variable
+}T{
   var a a
 }L{
   AlreadyDeclared
@@ -42,7 +52,9 @@ T{
   AlreadyDeclared
 }
 
-T{
+D{
+  Variable declaration: with curly brackets
+}T{
   var { }
 }L{
   UnexpectedArgument
@@ -50,7 +62,9 @@ T{
   UnexpectedArgument
 }
 
-T{
+D{
+  Variable declaration: using keyword as a variable name
+}T{
   var print
 }L{
   UnexpectedArgument
@@ -58,21 +72,15 @@ T{
   UnexpectedArgument
 }
 
-T{
-  var testvar vartest
+D{
+  Variable declaration: using word partialy same with keyword
+}T{
+  var testvar vartest tevarst
 }L{
-  \text{\textbf{var} }\text{testvar}\text{ }\text{vartest}\\
+  \text{\textbf{var} }\text{testvar}\text{ }\text{vartest}\text{ }\text{tevarst}\\
   &
 }F{
   real(8) :: testvar
+  real(8) :: tevarst
   real(8) :: vartest
-}
-
-T{
-  var testvar
-}L{
-  \text{\textbf{var} }\text{testvar}\\
-  &
-}F{
-  real(8) :: testvar
 }

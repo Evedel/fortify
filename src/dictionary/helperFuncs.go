@@ -1,8 +1,11 @@
 package dictionary
 
-import (
+import(
 	"github.com/Evedel/fortify/src/say"
 )
+// import(
+// 	"say"
+// )
 
 func Init() {
 	for key := range SpecialSymbol {
@@ -47,4 +50,17 @@ func GetSpaceTokenNode() TokenNode {
 
 func ToVarIdTokenNode(t Token) TokenNode {
 	return TokenNode{Token{VariableId, "VarId", t.Value}, nil}
+}
+
+func roundBracketOpenTN() TokenNode {
+	return TokenNode{Token{RoundBracketOpen, "(", "("}, nil}
+}
+
+func roundBracketCloseTN() TokenNode {
+	return TokenNode{Token{RoundBracketOpen, ")", ")"}, nil}
+}
+
+func expressionInBracketsTN(ch []TokenNode) TokenNode {
+	return TokenNode{
+		Token{ExpressionInBrackets, "expression in brackets", ""}, ch}
 }

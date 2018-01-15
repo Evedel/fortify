@@ -1,6 +1,6 @@
 package compile
 
-import (
+import(
 	"io/ioutil"
 	"os/exec"
 	"sort"
@@ -10,7 +10,6 @@ import (
 // 	"dictionary"
 // 	"say"
 // )
-
 import(
 	"github.com/Evedel/fortify/src/dictionary"
 	"github.com/Evedel/fortify/src/say"
@@ -63,6 +62,8 @@ func toLatex(SyntaxTree dictionary.TokenNode) (Result string) {
 				(tnchid == dictionary.Multiplication) ||
 				(tnchid == dictionary.Division) {
 				Result += toLatex(tnchlist[0]) + " " + tnchidnm + " " + toLatex(tnchlist[1])
+			} else if tnchid == dictionary.ExpressionInBrackets {
+				Result += "\\text{(}" + toLatex(tnchlist[1]) + "\\text{)}"
 			} else {
 				say.L3("There is no defined Latex compiler rules for ["+tnchidnm+"]", "", "\n")
 			}
@@ -135,6 +136,8 @@ func toFortran(SyntaxTree dictionary.TokenNode) (Result string) {
 			} else if (tnchid == dictionary.VariableId) ||
 				(tnchid == dictionary.Int) {
 				Result = tnchval
+			} else if tnchid == dictionary.ExpressionInBrackets {
+				Result += "(" + toFortran(tnchlist[1]) + ")"
 			} else {
 				say.L3("There is no defined Fortran compiler rules for ["+tnchidnm+"]", "", "\n")
 			}

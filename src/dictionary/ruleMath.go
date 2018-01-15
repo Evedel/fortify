@@ -65,6 +65,18 @@ func ruleMath(ttail []Token) (resCode int, stopInd int, childs []TokenNode, errm
 			} else {
 				return
 			}
+		} else if tokenid == RoundBracketOpen {
+			resCode, chStopIndx, chchilds, errmsg = ruleMathInBrackets(ttail[index+1:])
+			if resCode != Ok {
+				return
+			} else {
+				index = index + chStopIndx + 1
+				childs = append(childs, expressionInBracketsTN(chchilds))
+			}
+		} else if tokenid == RoundBracketClose {
+			resCode = MissedRoundBracketOpen
+			errmsg = thisName + "Open bracket was missed in math expression."
+			return
 		} else {
 			resCode = NotALanguageKeyWord
 			errmsg = thisName + "There is no defined rule for [ " + ttail[index].IdName + " ] symbol."

@@ -1,4 +1,6 @@
-T{
+D{
+  Math: simple addition
+}T{
   var a b
   a = 1
   b = 2
@@ -17,7 +19,9 @@ T{
 	a = b + a
 }
 
-T{
+D{
+  Math: simple subtraction
+}T{
   var a b
   a = 1
   b = 2
@@ -36,7 +40,9 @@ T{
 	a = b - a
 }
 
-T{
+D{
+  Math: simple multiplication
+}T{
   var a b
   a = 1
   b = 2
@@ -55,7 +61,9 @@ T{
 	a = b * a
 }
 
-T{
+D{
+  Math: simple division
+}T{
   var a b
   a = 1
   b = 2
@@ -74,7 +82,9 @@ T{
 	a = b / a
 }
 
-T{
+D{
+  Math: all simple operations at ones
+}T{
   var a b
   a = 1
   b = 2
@@ -91,4 +101,71 @@ T{
 	a = 1
 	b = 2
 	a = b + a * b - a / b
+}
+
+D{
+  Math: brackets in simple operations
+}T{
+  var b
+  b = 2
+  b = (b + b) * b
+}L{
+  \text{\textbf{var} }\text{b}\\
+  &\text{b}\text{ } = \text{ }\text{2}\\
+  &\text{b}\text{ } = \text{ }\text{(}\text{b}\text{ } + \text{ }\text{b}\text{)}\text{ } * \text{ }\text{b}\\
+  &
+}F{
+  real(8) :: b
+	b = 2
+	b = (b + b) * b
+}
+
+D{
+  Math: missed open brackets
+}T{
+  var b
+  b = 2
+  b = b + b) * b
+}L{
+  MissedRoundBracketOpen
+}F{
+  MissedRoundBracketOpen
+}
+
+D{
+  Math: missed closed bracket
+}T{
+  var b
+  b = 2
+  b = (b + b * b
+}L{
+  MissedRoundBracketClose
+}F{
+  MissedRoundBracketClose
+}
+
+D{
+  Math: simple operation without second arguments
+}T{
+  var a b
+  a = 1
+  b = 2
+  a = b +
+}L{
+  Wrong
+}F{
+  Wrong
+}
+
+D{
+  Math: simple operation without first argument
+}T{
+  var a b
+  a = 1
+  b = 2
+  a = + b
+}L{
+  Wrong
+}F{
+  Wrong
 }

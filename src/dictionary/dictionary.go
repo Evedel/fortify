@@ -2,8 +2,9 @@ package dictionary
 
 // all the possible words
 const (
-	Program    = iota
-	Expression = iota
+	Program    						= iota
+	Expression 						= iota
+	ExpressionInBrackets 	= iota
 
 	None        = iota
 	WrongSymbol = iota
@@ -19,6 +20,8 @@ const (
 
 	CurlyBracketOpen  = iota
 	CurlyBracketClose = iota
+	RoundBracketOpen  = iota
+	RoundBracketClose = iota
 
 	Assignment     = iota
 	Addition       = iota
@@ -52,7 +55,9 @@ var SpecialSymbol = map[string]int{
 	"+":  Addition,
 	"-":  Substraction,
 	"*":  Multiplication,
-	"/":  Division}
+	"/":  Division,
+	"(":  RoundBracketOpen,
+	")":  RoundBracketClose}
 
 var NeedbeMerroredReverse = map[int]string{
 	CurlyBracketOpen:  "{",

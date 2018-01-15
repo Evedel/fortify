@@ -5,4 +5,4 @@ print{"This Is Print For Fortran And LaTeX"}
 
 ! \print{"But This Will Be Printed Only In LaTeX"}
 
-# print{"And this one is comment for both"}
+# print{"And this one is commented for both"}

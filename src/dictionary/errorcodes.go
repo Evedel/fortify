@@ -11,6 +11,9 @@ const (
 	UnexpectedArgument  = iota
 	NotANumber          = iota
 
+	MissedRoundBracketClose = iota
+	MissedRoundBracketOpen  = iota
+
 	UndefinedError = iota
 
 	TOTOTODO = iota
@@ -26,6 +29,9 @@ var ErrorCodeDefinitions = map[int]string{
 	NotALanguageKeyWord: "NotALanguageKeyWord",
 	UnexpectedArgument:  "UnexpectedArgument",
 	NotANumber:          "NotANumber",
+
+	MissedRoundBracketOpen:  "MissedRoundBracketOpen",
+	MissedRoundBracketClose: "MissedRoundBracketClose",
 
 	UndefinedError: "UndefinedError",
 
