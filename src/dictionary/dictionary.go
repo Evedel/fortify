@@ -2,40 +2,41 @@ package dictionary
 
 // all the possible words
 const (
+	// Internal tokens
+	None        = iota
 	Program    						= iota
 	Expression 						= iota
 	ExpressionInBrackets 	= iota
+	VariableId = iota
 
-	None        = iota
-	WrongSymbol = iota
-
+	OperatonUnary   = iota
+	OperatonBinary  = iota
+	OperatorTernary = iota
+	Operand  				= iota
+	// Symbols
 	CarriageReturn = iota
 	DoubleQuote    = iota
 	Comma          = iota
 	Space          = iota
-
 	CommentTex = iota // Not shown in tex, but compiled in f90
 	CommentF90 = iota // Not shown in f90, but compiled in tex
 	CommentAll = iota // Not compiled at all
-
 	CurlyBracketOpen  = iota
 	CurlyBracketClose = iota
 	RoundBracketOpen  = iota
 	RoundBracketClose = iota
-
+	// Binary operators
 	Assignment     = iota
 	Addition       = iota
 	Substraction   = iota
 	Multiplication = iota
 	Division       = iota
-
+	// Data types
 	Int    = iota
 	Float  = iota
 	Word   = iota
 	String = iota
-
-	VariableId = iota
-
+	// Key words
 	Print          = iota
 	DeclarationVar = iota
 )

@@ -4,29 +4,22 @@ package dictionary
 //   "github.com/Evedel/fortify/src/say"
 // )
 
-func ruleDeclaration(ttail []Token) (resCode int, stopInd int, childs []TokenNode, errmsg string) {
+func ruleDeclaration(ttail []Token) (resCode int, stopInd int, resNode TokenNode, errmsg string) {
 	indexInternal := 0
 	resCode = Ok
 	errmsg = ""
+	resNode = TokenNodeVarDec()
 
 	for indexInternal < len(ttail) {
 		if ttail[indexInternal].Id == CarriageReturn {
-			childs = append(
-				childs,
-				TokenNode{
-					Token{Expression, "expression", ""},
-					append([]TokenNode{}, TokenNode{Token{CarriageReturn, "\\n", ""}, nil})})
+			resNode.List = append(resNode.List, TokenNodeReturn())
 			stopInd = indexInternal
 			return
 		} else if ttail[indexInternal].Id == Word {
 			wordstr := ttail[indexInternal].Value
 			if _, ok := Variables[wordstr]; !ok {
 				Variables[wordstr] = Float
-				childs = append(
-					childs,
-					TokenNode{
-						Token{Expression, "expression", ""},
-						append([]TokenNode{}, TokenNode{Token{VariableId, "VarId", wordstr}, nil})})
+				resNode.List = append(resNode.List, TokenNodeVarId(wordstr))
 			} else {
 				resCode = AlreadyDeclared
 				stopInd = indexInternal
@@ -34,11 +27,7 @@ func ruleDeclaration(ttail []Token) (resCode int, stopInd int, childs []TokenNod
 				return
 			}
 		} else if ttail[indexInternal].Id == Space {
-			childs = append(
-				childs,
-				TokenNode{
-					Token{Expression, "expression", ""},
-					append([]TokenNode{}, TokenNode{ttail[indexInternal], nil})})
+			resNode.List = append(resNode.List, TokenNodeSpace())
 		} else {
 			resCode = UnexpectedArgument
 			stopInd = indexInternal

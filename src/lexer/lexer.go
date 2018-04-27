@@ -22,19 +22,20 @@ func Tokenise(source string) (Tokenised []dictionary.Token) {
 	var t dictionary.Token
 	t.Id = dictionary.None
 	t.IdName = "none"
+	t.Value = ""
 	word := ""
 	for curpos < len(source) {
 		word += string(source[curpos])
 
 		if id, ok := dictionary.SpecialSymbol[word]; ok {
 			t.Id = id
-			t.IdName = word
+			t.IdName = dictionary.SpecialSymbolReverse[id]
 		} else if id, ok := dictionary.KeyWordRaw[word]; ok {
 			t.Id = id
-			t.IdName = word
+			t.IdName = dictionary.KeyWordRawReverse[id]
 		} else if id, ok := dictionary.KeyWordBackslash[word]; ok {
 			t.Id = id
-			t.IdName = word
+			t.IdName = dictionary.KeyWordBackslashReverse[id]
 		}
 		if t.Id == dictionary.None {
 			for backpos := len(word) - 1; backpos > -1; backpos-- {

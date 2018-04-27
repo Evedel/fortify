@@ -152,9 +152,9 @@ D{
   b = 2
   a = b +
 }L{
-  Wrong
+  NotEnoughArguments
 }F{
-  Wrong
+  NotEnoughArguments
 }
 
 D{
@@ -165,7 +165,7 @@ D{
   b = 2
   a = + b
 }L{
-  Wrong
+  NotEnoughArguments
 }F{
-  Wrong
+  NotEnoughArguments
 }

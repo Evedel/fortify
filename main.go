@@ -16,14 +16,6 @@ import(
 	"github.com/Evedel/fortify/src/dictionary"
 )
 
-// import(
-// 	"compile"
-// 	"dictionary"
-// 	"lexer"
-// 	"say"
-// 	"syntaxer"
-// )
-
 func main() {
 	say.Init("3")
 	dictionary.Init()
@@ -82,7 +74,9 @@ func main() {
 					source = source + string(b)
 				}
 				tokenisedForm := lexer.Tokenise(source)
+				say.L1("", tokenisedForm, "\n")
 				SyntaxTree, ok, emf := syntaxer.BuildTree(tokenisedForm)
+				dictionary.PrintSyntaxTree(SyntaxTree, "")
 				if ok == dictionary.Ok {
 					// dictionary.PrintSyntaxTree(SyntaxTree, "")
 					compile.ToLaTeX(SyntaxTree, sourceName)

@@ -5,7 +5,7 @@ package syntaxer
 // 	// "say"
 // )
 
-import(
+import (
   // "github.com/Evedel/fortify/src/say"
   "github.com/Evedel/fortify/src/dictionary"
 )
@@ -16,16 +16,12 @@ func BuildTree(Tokenised []dictionary.Token) (TokenTree dictionary.TokenNode, re
 	indx := 0
 	stopIndx := 0
 	errmsg = ""
-	chchilds := []dictionary.TokenNode{}
+	expToken := dictionary.TokenNode{}
 
 	for indx < len(Tokenised) {
-		resCode, stopIndx, chchilds, errmsg = dictionary.RuleExpression(Tokenised[indx:])
+		resCode, stopIndx, expToken, errmsg = dictionary.RuleExpression(Tokenised[indx:])
 		if resCode == dictionary.Ok {
-			TokenTree.List = append(TokenTree.List,
-				dictionary.TokenNode{
-					dictionary.Token{
-						dictionary.Expression, "expression", ""},
-					chchilds})
+			TokenTree.List = append(TokenTree.List, expToken)
 			indx += stopIndx + 1
 		} else {
 			indx = len(Tokenised) + 1

@@ -19,7 +19,7 @@ func ruleMathInBrackets(ttail []Token) (resCode int, stopInd int, childs []Token
 		tokenid := ttail[index].Id
 		// say.L1("", tokenthis, "\n")
 		if tokenid == RoundBracketClose {
-			resCode, _, chchilds, errmsg = ruleMath(ttail[0:index])
+			// resCode, _, chchilds, errmsg = ruleMath(ttail[0:index])
 			if resCode == Ok {
 				stopInd = index
 				childs = append(childs, ExpressionTokenNode(chchilds))

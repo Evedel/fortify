@@ -7,13 +7,6 @@ import(
 	"strings"
 )
 
-// import(
-// 	"dictionary"
-// 	"lexer"
-// 	"say"
-// 	"syntaxer"
-// )
-
 import(
 	"github.com/Evedel/fortify/src/dictionary"
 	"github.com/Evedel/fortify/src/lexer"

@@ -10,6 +10,7 @@ const (
 	NotALanguageKeyWord = iota
 	UnexpectedArgument  = iota
 	NotANumber          = iota
+	NotEnoughArguments  = iota
 
 	MissedRoundBracketClose = iota
 	MissedRoundBracketOpen  = iota
@@ -29,6 +30,7 @@ var ErrorCodeDefinitions = map[int]string{
 	NotALanguageKeyWord: "NotALanguageKeyWord",
 	UnexpectedArgument:  "UnexpectedArgument",
 	NotANumber:          "NotANumber",
+	NotEnoughArguments:  "NotEnoughArguments",
 
 	MissedRoundBracketOpen:  "MissedRoundBracketOpen",
 	MissedRoundBracketClose: "MissedRoundBracketClose",

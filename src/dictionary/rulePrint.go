@@ -34,7 +34,7 @@ func rulePrint(ttail []Token) (resCode int, stopInd int, childs []TokenNode, err
 						return
 					}
 				} else if ttail[stopInd].Id == Space {
-					childs = append(childs, GetSpaceTokenNode())
+					childs = append(childs, TokenNodeSpace())
 				} else if ttail[stopInd].Id == CurlyBracketClose {
 					resCode = Ok
 					childs = append(childs, TokenNode{ttail[stopInd], nil})

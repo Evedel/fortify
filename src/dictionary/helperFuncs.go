@@ -3,9 +3,6 @@ package dictionary
 import(
 	"github.com/Evedel/fortify/src/say"
 )
-// import(
-// 	"say"
-// )
 
 func Init() {
 	for key := range SpecialSymbol {
@@ -25,12 +22,8 @@ func Init() {
 func PrintSyntaxTree(TokenTree TokenNode, level string) {
 	say.L0(level+"> ", TokenTree.This, "\n")
 	for ttch := range TokenTree.List {
-		PrintSyntaxTree(TokenTree.List[ttch], level+"|--")
+		PrintSyntaxTree(TokenTree.List[ttch], level+"+  ")
 	}
-}
-
-func GetRNTokenNode() TokenNode {
-	return TokenNode{Token{CarriageReturn, "\\n", ""}, nil}
 }
 
 func ExpressionTokenNode(ch []TokenNode) TokenNode {
@@ -42,10 +35,6 @@ func ExpressionFromToken(t Token, ch []TokenNode) TokenNode {
 	return TokenNode{
 		Token{Expression, "expression", ""},
 		[]TokenNode{TokenNode{t, ch}}}
-}
-
-func GetSpaceTokenNode() TokenNode {
-	return TokenNode{Token{Space, " ", " "}, nil}
 }
 
 func ToVarIdTokenNode(t Token) TokenNode {
