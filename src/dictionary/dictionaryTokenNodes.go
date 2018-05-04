@@ -37,9 +37,22 @@ func TokenNodeAssignment() TokenNode {
 }
 
 func TokenNodeOperand() TokenNode {
-		return TokenNode{Token{Operand, "operand", ""}, nil}
+	return TokenNode{Token{Operand, "operand", ""}, nil}
+}
+
+func TokenNodeLeftHS() TokenNode {
+	return TokenNode{Token{LeftHS, "LeftHS", ""}, nil}
+}
+func TokenNodeRightHS() TokenNode {
+	return TokenNode{Token{RightHS, "RightHS", ""}, nil}
+}
+func TokenNodeRHS2LHS(t TokenNode) TokenNode {
+	return TokenNode{Token{LeftHS, "LeftHS", ""}, t.List}
 }
 
 func TokenNodeFromToken(t Token) TokenNode {
 	return TokenNode{Token{t.Id, t.IdName, t.Value}, nil}
+}
+func TokenNodeFromTokenAndList(t Token, tlist []TokenNode) TokenNode {
+	return TokenNode{Token{t.Id, t.IdName, t.Value}, tlist}
 }

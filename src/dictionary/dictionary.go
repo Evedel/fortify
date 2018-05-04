@@ -9,15 +9,15 @@ const (
 	ExpressionInBrackets 	= iota
 	VariableId = iota
 
-	OperatonUnary   = iota
-	OperatonBinary  = iota
-	OperatorTernary = iota
-	Operand  				= iota
+	RightHS = iota
+	LeftHS 	= iota
+	Operand = iota
 	// Symbols
-	CarriageReturn = iota
-	DoubleQuote    = iota
-	Comma          = iota
-	Space          = iota
+	CarriageReturn 	= iota
+	DoubleQuote    	= iota
+	Comma          	= iota
+	Space          	= iota
+	Word   					= iota
 	CommentTex = iota // Not shown in tex, but compiled in f90
 	CommentF90 = iota // Not shown in f90, but compiled in tex
 	CommentAll = iota // Not compiled at all
@@ -34,7 +34,6 @@ const (
 	// Data types
 	Int    = iota
 	Float  = iota
-	Word   = iota
 	String = iota
 	// Key words
 	Print          = iota

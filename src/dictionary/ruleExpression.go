@@ -16,7 +16,7 @@ func RuleExpression(ttail []Token) (resCode int, stopInd int, resNode TokenNode,
 	chindex := 0
 
 	for index < len(ttail) {
-		say.L2("", ttail[index], "\n")
+		say.L2("Rule Expression: ", ttail[index], "\n")
 		tokenid := ttail[index].Id
 		tokenvalstr := ttail[index].Value
 		if tokenid == Space {

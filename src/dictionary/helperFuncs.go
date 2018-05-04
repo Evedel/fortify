@@ -22,7 +22,7 @@ func Init() {
 func PrintSyntaxTree(TokenTree TokenNode, level string) {
 	say.L0(level+"> ", TokenTree.This, "\n")
 	for ttch := range TokenTree.List {
-		PrintSyntaxTree(TokenTree.List[ttch], level+"+  ")
+		PrintSyntaxTree(TokenTree.List[ttch], level+"+   ")
 	}
 }
 

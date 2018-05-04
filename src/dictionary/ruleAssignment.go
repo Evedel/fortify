@@ -22,18 +22,12 @@ func ruleAssignment(ttail []Token) (resCode int, stopInd int, resNode TokenNode,
 			lhs = append(lhs, TokenNodeSpace())
 		} else if tokenid == Assignment {
 			resNode = TokenNodeAssignment()
-			lhsEnd := TokenNodeOperand()
-			lhsEnd.List = append(lhs)
-			resNode.List = append(resNode.List, lhsEnd)
+			lhsNode := TokenNodeLeftHS()
+			lhsNode.List = append(lhs)
+			resNode.List = append(resNode.List, lhsNode)
 			resCode, chStopIndx, rhs, errmsg = ruleOperand(ttail[index+1:])
 			stopInd = index + chStopIndx + 1
-			if len(rhs.List) != 0 {
-				rhsEnd := TokenNodeOperand()
-				rhsEnd.List = append(rhsEnd.List, rhs)
-				resNode.List = append(resNode.List, rhsEnd)
-			} else {
-				resNode.List = append(resNode.List, rhs)
-			}
+			resNode.List = append(resNode.List, rhs)
 			return
 		} else if tokenid == CarriageReturn {
 			resCode = NotEnoughArguments
