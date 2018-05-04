@@ -13,9 +13,9 @@ TODO
 
 Variable Declaration
 ---
-Before using, variable needs to be declared
-`var a b c`
-`\var a b c`
-TODO need to be more consistent with latex
-`\var{  a b c
-        d e f }`
+Before using, variable needs to be declared  
+`var a b c`  
+`\var a b c`  
+TODO need to be more consistent with latex  
+`\var{  a b c  
+        d e f }`  
