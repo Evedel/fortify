@@ -15,12 +15,17 @@ func reduceToFortran(HeadToken dictionary.TokenNode) (newHeadToken dictionary.To
 			(HeadToken.This.Id == dictionary.DontCompileF90) ||
       (HeadToken.This.Id == dictionary.DeclarationVar) {
         return
-  } else {
+	} else {
     childs := []dictionary.TokenNode{}
-    if (len(HeadToken.List) == 0) {
-      newHeadToken = dictionary.TokenNode{HeadToken.This, nil}
-      reduse = false
-      return
+    if len(HeadToken.List) == 0 {
+			if (HeadToken.This.Id == dictionary.LeftHS) ||
+				(HeadToken.This.Id == dictionary.RightHS) {
+					return
+			} else {
+				newHeadToken = dictionary.TokenNode{HeadToken.This, nil}
+	      reduse = false
+	      return				
+			}
     } else {
       for _, subtoken := range HeadToken.List {
         reducedSubToken, needReduce := reduceToFortran(subtoken)
@@ -28,7 +33,7 @@ func reduceToFortran(HeadToken dictionary.TokenNode) (newHeadToken dictionary.To
           childs = append(childs, reducedSubToken)
         }
       }
-      if (len(childs) == 0) {
+      if (len(childs) == 0) && (HeadToken.This.Id != dictionary.Program) {
         return
       } else {
         newHeadToken = dictionary.TokenNode{HeadToken.This, childs}

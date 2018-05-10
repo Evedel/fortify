@@ -98,12 +98,21 @@ func TestExpression(t *testing.T) {
 						tokenised := lexer.Tokenise(inputScr)
 						stree, ok, em := syntaxer.BuildTree(tokenised)
 						resultTex := toLatex(stree)
-						resultF90, _ := toFortran(stree)
-
+						// dictionary.PrintSyntaxTree(stree, "")
+						rtree, _ := reduceToFortran(stree)
+						// dictionary.PrintSyntaxTree(rtree, "")
+						resultF90, okf90 := toFortran(rtree)
+						// say.L0("", resultF90, "\n")
+						// say.L0("", ok, "\n")
+						// say.L0("", okf90, "\n")
 						if ok != dictionary.Ok {
 							resultTex = dictionary.ErrorCodeDefinitions[ok]
 							resultF90 = dictionary.ErrorCodeDefinitions[ok]
+						} else if okf90 != dictionary.Ok {
+							resultTex = dictionary.ErrorCodeDefinitions[okf90]
+							resultF90 = dictionary.ErrorCodeDefinitions[okf90]
 						}
+
 						resultF90 = strings.Replace(resultF90, "\t", "", -1)
 						nTests += 1
 						if (ok != dictionary.Ok) && (verbouse == 1) {
@@ -125,12 +134,12 @@ func TestExpression(t *testing.T) {
 						}
 
 						if inputTex != resultTex {
-							say.L1("#", done, " : fail : ["+f.Name()+"]<->[ " + descr + " ]\n")
+							say.L3("#", done, " : fail : ["+f.Name()+"]<->[ " + descr + " ]\n")
 							t.Error("For input: [ " + inputScr + " ] Latex:\n Expected [" + inputTex + "]\n Got [" + resultTex + "]")
 							nFails += 1
 							// t.FailNow()
 						} else if inputF90 != resultF90 {
-							say.L1("#", done, " : fail : ["+f.Name()+"]<->[ " + descr + " ]\n")
+							say.L3("#", done, " : fail : ["+f.Name()+"]<->[ " + descr + " ]\n")
 							t.Error("For input: [ " + inputScr + " ] Fortran:\n Expected [" + inputF90 + "]\n Got [" + resultF90 + "]")
 							nFails += 1
 							// t.FailNow()
