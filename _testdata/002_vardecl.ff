@@ -3,8 +3,8 @@ D{
 }T{
   var a
 }L{
-  \text{\textbf{var} }\text{a}\\
-  &
+  &\text{\textbf{var} }\text{a}\\
+  &\
 }F{
   real(8) :: a
 }
@@ -14,8 +14,8 @@ D{
 }T{
   var a b
 }L{
-  \text{\textbf{var} }\text{a}\text{ }\text{b}\\
-  &
+  &\text{\textbf{var} }\text{a}\text{ }\text{b}\\
+  &\
 }F{
   real(8) :: a
   real(8) :: b
@@ -36,8 +36,8 @@ D{
 }T{
   var ab
 }L{
-  \text{\textbf{var} }\text{ab}\\
-  &
+  &\text{\textbf{var} }\text{ab}\\
+  &\
 }F{
   real(8) :: ab
 }
@@ -77,8 +77,8 @@ D{
 }T{
   var testvar vartest tevarst
 }L{
-  \text{\textbf{var} }\text{testvar}\text{ }\text{vartest}\text{ }\text{tevarst}\\
-  &
+  &\text{\textbf{var} }\text{testvar}\text{ }\text{vartest}\text{ }\text{tevarst}\\
+  &\
 }F{
   real(8) :: testvar
   real(8) :: tevarst

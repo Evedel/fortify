@@ -4,9 +4,9 @@ D{
   var a
   a = 1
 }L{
-  \text{\textbf{var} }\text{a}\\
+  &\text{\textbf{var} }\text{a}\\
   &\text{a}\text{ } = \text{ }\text{1}\\
-  &
+  &\
 }F{
   real(8) :: a
   a = 1

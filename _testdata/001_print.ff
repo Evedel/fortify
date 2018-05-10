@@ -3,8 +3,8 @@ D{
 }T{
   print{"This Is Print For Fortran And LaTeX"}
 }L{
-  \text{\textbf{print}}\{\text{"This Is Print For Fortran And LaTeX"}\}\\
-  &
+  &\text{\textbf{print}}\{\text{"This Is Print For Fortran And LaTeX"}\}\\
+  &\
 }F{
   print*, "This Is Print For Fortran And LaTeX"
 }
@@ -116,10 +116,10 @@ D{
   a = 1
   print{a}
 }L{
-  \text{\textbf{var} }\text{a}\\
+  &\text{\textbf{var} }\text{a}\\
   &\text{a}\text{ } = \text{ }\text{1}\\
   &\text{\textbf{print}}\{\text{a}\}\\
-  &
+  &\
 }F{
   real(8) :: a
 	a = 1
@@ -133,10 +133,10 @@ D{
   a = 1
   print{"a: " a}
 }L{
-  \text{\textbf{var} }\text{a}\\
+  &\text{\textbf{var} }\text{a}\\
   &\text{a}\text{ } = \text{ }\text{1}\\
   &\text{\textbf{print}}\{\text{"a: " a}\}\\
-  &
+  &\
 }F{
   real(8) :: a
 	a = 1
@@ -151,11 +151,11 @@ D{
   b = 2
   print{b a}
 }L{
-  \text{\textbf{var} }\text{a}\text{ }\text{b}\\
+  &\text{\textbf{var} }\text{a}\text{ }\text{b}\\
   &\text{a}\text{ } = \text{ }\text{1}\\
   &\text{b}\text{ } = \text{ }\text{2}\\
   &\text{\textbf{print}}\{\text{b a}\}\\
-  &
+  &\
 }F{
   real(8) :: a
 	real(8) :: b
@@ -169,8 +169,8 @@ D{
 }T{
   print{"b " " a"}
 }L{
-  \text{\textbf{print}}\{\text{"b " " a"}\}\\
-  &
+  &\text{\textbf{print}}\{\text{"b " " a"}\}\\
+  &\
 }F{
   print*, "b ", " a"
 }

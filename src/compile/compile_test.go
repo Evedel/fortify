@@ -89,6 +89,7 @@ func TestExpression(t *testing.T) {
 							inputF90 += strings.TrimSpace(lines[i]) + "\n"
 							i++
 						}
+						inputF90 = inputF90[:len(inputF90)-1]
 						i++
 						i++
 					}
@@ -98,27 +99,31 @@ func TestExpression(t *testing.T) {
 						stree, ok, em := syntaxer.BuildTree(tokenised)
 						resultTex := toLatex(stree)
 						resultF90, _ := toFortran(stree)
-						// resultF90, resf90code := toFortran(stree)
-						// say.L1("", resf90code, "\n")
-						if resultTex == "" {
-							resultTex = "-"
-						}
-						if resultF90 == "" {
-							resultF90 = "-\n"
-						}
 
 						if ok != dictionary.Ok {
 							resultTex = dictionary.ErrorCodeDefinitions[ok]
-							resultF90 = dictionary.ErrorCodeDefinitions[ok] + "\n"
+							resultF90 = dictionary.ErrorCodeDefinitions[ok]
 						}
 						resultF90 = strings.Replace(resultF90, "\t", "", -1)
-						// fsrc = strings.Replace(fsrc, "\n", "", -1)
-						// lsrc = strings.Replace(lsrc, "\n", "", -1)
-						// dictionary.PrintSyntaxTree(stree, "")
 						nTests += 1
 						if (ok != dictionary.Ok) && (verbouse == 1) {
 							say.L3(em, "", "\n")
 						}
+						resTexLines := strings.Split(string(resultTex), "\n")
+						if len(resTexLines) > 10 {
+							resultTex = strings.Join(resTexLines[6:len(resTexLines)-4], "\n")
+						}
+						if resultTex == "&\\" {
+							resultTex = "-"
+						}
+						resF90Lines := strings.Split(string(resultF90), "\n")
+						if len(resF90Lines) > 2 {
+							resultF90 = strings.Join(resF90Lines[1:len(resF90Lines)-1], "\n")
+						}
+						if len(resF90Lines) == 2 {
+							resultF90 = "-"
+						}
+
 						if inputTex != resultTex {
 							say.L1("#", done, " : fail : ["+f.Name()+"]<->[ " + descr + " ]\n")
 							t.Error("For input: [ " + inputScr + " ] Latex:\n Expected [" + inputTex + "]\n Got [" + resultTex + "]")

@@ -19,8 +19,18 @@ func toLatex(SyntaxTree dictionary.TokenNode) (Result string) {
 	tnchidnm := tn.This.IdName
 	// say.L0("", tn, "\n")
 	if tnid == dictionary.Program {
-		for ttch := range SyntaxTree.List {
-			Result += toLatex(SyntaxTree.List[ttch])
+		for ttchi := 0; ttchi < len(tnchlist); ttchi++ {
+			// TODO dirty hack that I don't like, but don't want to work with to the moment
+			if (tnchlist[ttchi].This.Id == dictionary.CommentAll) ||
+				(tnchlist[ttchi].This.Id == dictionary.DontCompileTex) {
+				if len(tnchlist) >= ttchi+1 {
+					if tnchlist[ttchi+1].This.Id == dictionary.CarriageReturn {
+						ttchi++
+					}
+				}
+			} else {
+				Result += toLatex(SyntaxTree.List[ttchi])
+			}
 		}
 		Result = "\\documentclass[8pt]{article} \n" +
 			"\\usepackage{amsmath} \n" +
@@ -28,15 +38,10 @@ func toLatex(SyntaxTree dictionary.TokenNode) (Result string) {
 			"\\begin{document} \n" +
 			"\\begin{equation} \n" +
 			"\\begin{aligned} \n" +
-			"&" + Result +
+			"&" + Result + "\\\n" +
 			"\\end{aligned} \n" +
 			"\\end{equation} \n" +
 			"\\end{document} \n"
-	} else if (tnid == dictionary.CommentAll) ||
-		(tnid == dictionary.DontCompileTex) {
-		//------------//
-		// do nothing //
-		//------------//
 	} else if tnid == dictionary.Space {
 			Result += "\\text{ }"
 	} else if tnid == dictionary.CarriageReturn {
@@ -146,7 +151,6 @@ func toFortran(SyntaxTree dictionary.TokenNode) (Result string, resCode int) {
 		if (len(tnlist) == 2) {
 			op1, r1 := toFortran(tnlist[0])
 			op2, r2 := toFortran(tnlist[1])
-
 			if (r1 != dictionary.Ok) {
 				resCode = r1
 				return
@@ -176,7 +180,7 @@ func toFortran(SyntaxTree dictionary.TokenNode) (Result string, resCode int) {
 					resCode = r2
 					return
 				}
-				Result += "\t" + op1 + " " + tnidnm + " " + op2 + "\n"
+				Result += "\t" + op1 + " " + tnidnm + " " + op2
 				resCode = dictionary.Ok
 			} else {
 				// TODO add cases to see wich argument is lost
@@ -194,16 +198,29 @@ func toFortran(SyntaxTree dictionary.TokenNode) (Result string, resCode int) {
 			resCode = res
 		}
 	} else if ((tnid == dictionary.LeftHS) || (tnid == dictionary.RightHS)) {
-		op, res := toFortran(tnlist[0])
-		if (res == dictionary.Ok) {
-			Result += op
-			resCode = dictionary.Ok
-		} else {
-			resCode = res
+		for ttch := range tnlist {
+			op, res := toFortran(tnlist[ttch])
+			if (res == dictionary.Ok) {
+				Result += op
+			} else {
+				resCode = res
+				return
+			}
 		}
+		resCode = dictionary.Ok
+		return
 	} else if (tnid == dictionary.Float) {
+		// say.L0("", tn, "\n")
 		Result += tnval
 		resCode = dictionary.Ok
+		// TODO delete this after reducind done
+	} else if (tnid == dictionary.Space) ||
+    (tnid == dictionary.CarriageReturn) ||
+    (tnid == dictionary.CommentAll) ||
+		(tnid == dictionary.DontCompileF90) ||
+    (tnid == dictionary.DeclarationVar) {
+		resCode = dictionary.Ok
+		return
 	} else {
 		say.L3("There is no defined Fortran compiler rules for ["+tnidnm+"]", "", "\n")
 	}

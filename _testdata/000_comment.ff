@@ -13,8 +13,8 @@ D{
 }T{
   ! print{"Fortran"}
 }L{
-  \text{ }\text{\textbf{print}}\{\text{"Fortran"}\}\\
-  &
+  &\text{ }\text{\textbf{print}}\{\text{"Fortran"}\}\\
+  &\
 }F{
   -
 }
