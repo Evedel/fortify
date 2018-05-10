@@ -20,8 +20,13 @@ func TestExpression(t *testing.T) {
 	verbouse := 0
 	done := 0
 
+	nTests := 0
+	nFails := 0
+	nOk := 0
+
 	prefix := "../../_testdata"
 	tests, err := ioutil.ReadDir(prefix)
+
 	if err != nil {
 		say.L3("", err, "\n")
 	} else {
@@ -33,70 +38,108 @@ func TestExpression(t *testing.T) {
 				lines := strings.Split(string(content), "\n")
 				i := 0
 				for i < len(lines) {
+					dictionary.Variables = make(map[string]int)
+
 					descr := ""
 					inputScr := ""
 					inputTex := ""
 					inputF90 := ""
-					dictionary.Variables = make(map[string]int)
-					i += 1
-					for lines[i] != "}T{" {
-						descr += strings.TrimSpace(lines[i])
-						i += 1
-					}
-					i += 1
-					for lines[i] != "}L{" {
-						inputScr += strings.TrimSpace(lines[i]) + "\n"
-						i += 1
-					}
-					i += 1
-					for lines[i] != "}F{" {
-						inputTex += strings.TrimSpace(lines[i]) + "\n"
-						i += 1
-					}
-					inputTex = inputTex[:len(inputTex)-1]
-					i += 1
-					for lines[i] != "}" {
-						inputF90 += strings.TrimSpace(lines[i]) + "\n"
-						i += 1
-					}
-					i += 2
 
-					tokenised := lexer.Tokenise(inputScr)
-					stree, ok, em := syntaxer.BuildTree(tokenised)
-					resultTex := toLatex(stree)
-					resultF90 := toFortran(stree)
-					if resultTex == "" {
-						resultTex = "-"
-					}
-					if resultF90 == "" {
-						resultF90 = "-\n"
-					}
-
-					if ok != dictionary.Ok {
-						resultTex = dictionary.ErrorCodeDefinitions[ok]
-						resultF90 = dictionary.ErrorCodeDefinitions[ok] + "\n"
-					}
-					resultF90 = strings.Replace(resultF90, "\t", "", -1)
-					// fsrc = strings.Replace(fsrc, "\n", "", -1)
-					// lsrc = strings.Replace(lsrc, "\n", "", -1)
-					// dictionary.PrintSyntaxTree(stree, "")
-					if (ok != dictionary.Ok) && (verbouse == 1) {
-						say.L3(em, "", "\n")
-					}
-					if inputTex != resultTex {
-						say.L1("#", done, "["+f.Name()+"]<->[ " + descr + " ] fail\n")
-						t.Error("For input: [ " + inputScr + " ] Latex:\n Expected [" + inputTex + "]\n Got [" + resultTex + "]")
-						t.FailNow()
-					} else if inputF90 != resultF90 {
-						say.L1("#", done, "["+f.Name()+"]<->[ " + descr + " ] fail\n")
-						t.Error("For input: [ " + inputScr + " ] Fortran:\n Expected [" + inputF90 + "]\n Got [" + resultF90 + "]")
-						t.FailNow()
+					skipTest := false
+					if (lines[i][0] == '@') {
+						skipTest = true
+						i++
+						i++
+						for lines[i] != "}T{" {
+							i++
+						}
+						i++
+						for lines[i] != "}L{" {
+							i++
+						}
+						i++
+						for lines[i] != "}F{" {
+							i++
+						}
+						i++
+						for lines[i] != "}" {
+							i++
+						}
+						i++
+						i++
 					} else {
-						say.L1("#", done, "["+f.Name()+"]<->[ " + descr + " ] ok\n")
-						done += 1
+						i++
+						for lines[i] != "}T{" {
+							descr += strings.TrimSpace(lines[i])
+							i++
+						}
+						i++
+						for lines[i] != "}L{" {
+							inputScr += strings.TrimSpace(lines[i]) + "\n"
+							i++
+						}
+						i++
+						for lines[i] != "}F{" {
+							inputTex += strings.TrimSpace(lines[i]) + "\n"
+							i++
+						}
+						inputTex = inputTex[:len(inputTex)-1]
+						i++
+						for lines[i] != "}" {
+							inputF90 += strings.TrimSpace(lines[i]) + "\n"
+							i++
+						}
+						i++
+						i++
+					}
+
+					if !skipTest {
+						tokenised := lexer.Tokenise(inputScr)
+						stree, ok, em := syntaxer.BuildTree(tokenised)
+						resultTex := toLatex(stree)
+						resultF90, _ := toFortran(stree)
+						// resultF90, resf90code := toFortran(stree)
+						// say.L1("", resf90code, "\n")
+						if resultTex == "" {
+							resultTex = "-"
+						}
+						if resultF90 == "" {
+							resultF90 = "-\n"
+						}
+
+						if ok != dictionary.Ok {
+							resultTex = dictionary.ErrorCodeDefinitions[ok]
+							resultF90 = dictionary.ErrorCodeDefinitions[ok] + "\n"
+						}
+						resultF90 = strings.Replace(resultF90, "\t", "", -1)
+						// fsrc = strings.Replace(fsrc, "\n", "", -1)
+						// lsrc = strings.Replace(lsrc, "\n", "", -1)
+						// dictionary.PrintSyntaxTree(stree, "")
+						nTests += 1
+						if (ok != dictionary.Ok) && (verbouse == 1) {
+							say.L3(em, "", "\n")
+						}
+						if inputTex != resultTex {
+							say.L1("#", done, " : fail : ["+f.Name()+"]<->[ " + descr + " ]\n")
+							t.Error("For input: [ " + inputScr + " ] Latex:\n Expected [" + inputTex + "]\n Got [" + resultTex + "]")
+							nFails += 1
+							// t.FailNow()
+						} else if inputF90 != resultF90 {
+							say.L1("#", done, " : fail : ["+f.Name()+"]<->[ " + descr + " ]\n")
+							t.Error("For input: [ " + inputScr + " ] Fortran:\n Expected [" + inputF90 + "]\n Got [" + resultF90 + "]")
+							nFails += 1
+							// t.FailNow()
+						} else {
+							say.L1("#", done, " :   ok : ["+f.Name()+"]<->[ " + descr + " ]\n")
+							done += 1
+							nOk += 1
+						}
 					}
 				}
 			}
 		}
 	}
+	say.L2("Tests: ", nTests, "\n")
+	say.L2("Fails: ", nFails, "\n")
+	say.L2(" Done: ", nOk, "\n")
 }

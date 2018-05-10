@@ -1,18 +1,23 @@
 var a b c
 
-# a = 10
+#two assignments in a row cause '\n' between them to disappear
+a = 10
 b = 5
-#print{"a" a}
-#print{"b" b}
 
-c =
-c = a +
-c = a *
-b = -a
-b=-a
-b = a-
-b=a-
-c = a + - b
-c = a + * b
-c = -a
-c = (a +  a)
+print{"Fortran"}
+
+print{"a" a}
+print{"b" b}
+
+# all the commented should be added to tests as it may fail
+#c =
+#c = a +
+#c = a *
+#b = -a
+#b=-a
+#b = a-
+#b=a-
+#c = a + - b
+#c = a + * b
+#c = -a
+#c = (a +  a)

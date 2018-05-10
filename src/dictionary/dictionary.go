@@ -5,7 +5,6 @@ const (
 	// Internal tokens
 	None        = iota
 	Program    						= iota
-	Expression 						= iota
 	ExpressionInBrackets 	= iota
 	VariableId = iota
 
@@ -18,9 +17,9 @@ const (
 	Comma          	= iota
 	Space          	= iota
 	Word   					= iota
-	CommentTex = iota // Not shown in tex, but compiled in f90
-	CommentF90 = iota // Not shown in f90, but compiled in tex
-	CommentAll = iota // Not compiled at all
+	DontCompileTex  = iota // Not shown in tex, but compiled in f90
+	DontCompileF90  = iota // Not shown in f90, but compiled in tex
+	CommentAll      = iota // Not compiled at all
 	CurlyBracketOpen  = iota
 	CurlyBracketClose = iota
 	RoundBracketOpen  = iota
@@ -43,8 +42,8 @@ const (
 var SpecialSymbolReverse = map[int]string{}
 var SpecialSymbol = map[string]int{
 	"\n": CarriageReturn,
-	"%":  CommentTex,
-	"!":  CommentF90,
+	"%":  DontCompileTex,
+	"!":  DontCompileF90,
 	"#":  CommentAll,
 	"\"": DoubleQuote,
 	"{":  CurlyBracketOpen,

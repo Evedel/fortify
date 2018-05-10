@@ -5,15 +5,15 @@ package dictionary
 // )
 
 func ruleDeclaration(ttail []Token) (resCode int, stopInd int, resNode TokenNode, errmsg string) {
-	indexInternal := 0
-	resCode = Ok
-	errmsg = ""
+	indexInternal := 1
+	resCode = UndefinedError
+	errmsg = "ruleDeclaration: "
 	resNode = TokenNodeVarDec()
 
 	for indexInternal < len(ttail) {
 		if ttail[indexInternal].Id == CarriageReturn {
-			resNode.List = append(resNode.List, TokenNodeReturn())
-			stopInd = indexInternal
+			stopInd = indexInternal - 1
+			resCode = Ok
 			return
 		} else if ttail[indexInternal].Id == Word {
 			wordstr := ttail[indexInternal].Value

@@ -14,56 +14,68 @@ import(
 func toLatex(SyntaxTree dictionary.TokenNode) (Result string) {
 	tn := SyntaxTree
 	tnid := tn.This.Id
+	tnchlist := tn.List
+	tnchval := tn.This.Value
+	tnchidnm := tn.This.IdName
+	// say.L0("", tn, "\n")
 	if tnid == dictionary.Program {
 		for ttch := range SyntaxTree.List {
 			Result += toLatex(SyntaxTree.List[ttch])
 		}
-	} else if tnid == dictionary.Expression {
-		for i := range tn.List {
-			tnchid := tn.List[i].This.Id
-			tnchval := tn.List[i].This.Value
-			tnchidnm := tn.List[i].This.IdName
-			tnchlist := tn.List[i].List
-
-			if (tnchid == dictionary.CommentAll) ||
-				(tnchid == dictionary.CommentTex) {
-				//------------//
-				// do nothing //
-				//------------//
-			} else if tnchid == dictionary.Space {
-				Result += "\\text{ }"
-			} else if tnchid == dictionary.CarriageReturn {
-				Result += "\\\\\n&"
-			} else if tnchid == dictionary.CommentF90 {
-				for ttch := range tnchlist {
-					Result += toLatex(tnchlist[ttch])
-				}
-			} else if tnchid == dictionary.Print {
-				Result += "\\text{\\textbf{print}}\\{\\text{"
-				for i := 1; i < len(tnchlist)-1; i++ {
-					Result += tnchlist[i].This.Value
-				}
-				Result += "}\\}"
-			} else if tnchid == dictionary.DeclarationVar {
-				Result += "\\text{\\textbf{var} }"
-				for ttch := range tnchlist {
-					Result += toLatex(tnchlist[ttch])
-				}
-			} else if (tnchid == dictionary.VariableId) ||
-				(tnchid == dictionary.Int) {
-				Result += "\\text{" + tnchval + "}"
-			} else if (tnchid == dictionary.Assignment) ||
-				(tnchid == dictionary.Addition) ||
-				(tnchid == dictionary.Substraction) ||
-				(tnchid == dictionary.Multiplication) ||
-				(tnchid == dictionary.Division) {
-				Result += toLatex(tnchlist[0]) + " " + tnchidnm + " " + toLatex(tnchlist[1])
-			} else if tnchid == dictionary.ExpressionInBrackets {
-				Result += "\\text{(}" + toLatex(tnchlist[1]) + "\\text{)}"
-			} else {
-				say.L3("There is no defined Latex compiler rules for ["+tnchidnm+"]", "", "\n")
-			}
+		Result = "\\documentclass[8pt]{article} \n" +
+			"\\usepackage{amsmath} \n" +
+			"\\allowdisplaybreaks\n" +
+			"\\begin{document} \n" +
+			"\\begin{equation} \n" +
+			"\\begin{aligned} \n" +
+			"&" + Result +
+			"\\end{aligned} \n" +
+			"\\end{equation} \n" +
+			"\\end{document} \n"
+	} else if (tnid == dictionary.CommentAll) ||
+		(tnid == dictionary.DontCompileTex) {
+		//------------//
+		// do nothing //
+		//------------//
+	} else if tnid == dictionary.Space {
+			Result += "\\text{ }"
+	} else if tnid == dictionary.CarriageReturn {
+		Result += "\\\\\n&"
+	} else if tnid == dictionary.DontCompileF90 {
+		for ttch := range tnchlist {
+			Result += toLatex(tnchlist[ttch])
 		}
+	} else if tnid == dictionary.Print {
+		Result += "\\text{\\textbf{print}}\\{\\text{"
+		for i := 1; i < len(tnchlist)-1; i++ {
+			Result += tnchlist[i].This.Value
+		}
+		Result += "}\\}"
+	} else if tnid == dictionary.DeclarationVar {
+		Result += "\\text{\\textbf{var} }"
+		for ttch := range tnchlist {
+			Result += toLatex(tnchlist[ttch])
+		}
+	} else if (tnid == dictionary.VariableId) ||
+		(tnid == dictionary.Int) {
+		Result += "\\text{" + tnchval + "}"
+	} else if (tnid == dictionary.Assignment) ||
+		(tnid == dictionary.Addition) ||
+		(tnid == dictionary.Substraction) ||
+		(tnid == dictionary.Multiplication) ||
+		(tnid == dictionary.Division) {
+		Result += toLatex(tnchlist[0]) + " " + tnchidnm + " " + toLatex(tnchlist[1])
+	} else if ((tnid == dictionary.RightHS) || (tnid == dictionary.LeftHS)) {
+		for ttch := range tnchlist {
+			Result += toLatex(tnchlist[ttch])
+		}
+	} else if (tnid == dictionary.Float) {
+		Result += "\\text{" + tnchval + "}"
+	} else if (tnid == dictionary.ExpressionInBrackets) {
+		// Result += "\\text{(}" + toLatex(tnchlist[1]) + "\\text{)}"
+		say.L3("There is no defined Latex compiler rules for ["+tnchidnm+"]", "", "\n")
+	} else {
+		say.L3("There is no defined Latex compiler rules for ["+tnchidnm+"]", "", "\n")
 	}
 	return
 }
@@ -73,6 +85,11 @@ func toFortran(SyntaxTree dictionary.TokenNode) (Result string, resCode int) {
 
 	tn := SyntaxTree
 	tnid := tn.This.Id
+
+	tnval := tn.This.Value
+	tnidnm := tn.This.IdName
+	tnlist := tn.List
+
 	if tnid == dictionary.Program {
 		var sortedkeys []string
 		for k := range dictionary.Variables {
@@ -84,11 +101,9 @@ func toFortran(SyntaxTree dictionary.TokenNode) (Result string, resCode int) {
 			vartype := dictionary.Variables[varkey]
 			if vartype == dictionary.Int {
 				Result += "\tinteger :: " + varkey + "\n"
-			}
-			if vartype == dictionary.Float {
+			} else if vartype == dictionary.Float {
 				Result += "\treal(8) :: " + varkey + "\n"
-			}
-			if vartype == dictionary.String {
+			} else if vartype == dictionary.String {
 				Result += "\tcharacter (len=256) :: " + varkey + "\n"
 			}
 		}
@@ -101,91 +116,96 @@ func toFortran(SyntaxTree dictionary.TokenNode) (Result string, resCode int) {
 				return
 			}
 		}
+		Result = "program main\n" +
+			Result +
+			"end program main"
 		resCode = dictionary.Ok
-	} else if tnid == dictionary.Expression {
-		for i := range tn.List {
-			tnchid := tn.List[i].This.Id
-			tnchval := tn.List[i].This.Value
-			tnchidnm := tn.List[i].This.IdName
-			tnchlist := tn.List[i].List
-
-			if tnchid == dictionary.CommentTex {
-				for ttch := range tnchlist {
-					op, res := toFortran(tnchlist[ttch])
-					if (res == dictionary.Ok) {
-						Result += op
-					} else {
-						resCode = res
-						return
-					}
-				}
-				resCode = dictionary.Ok
-			} else if tnchid == dictionary.Print {
-				Result += "\t" + "print*, "
-				for i := 1; i < len(tnchlist)-1; i++ {
-					if tnchlist[i].This.Id == dictionary.Space {
-						Result += ", "
-					} else {
-						Result += tnchlist[i].This.Value + " "
-					}
-				}
-				Result += "\n"
-				resCode = dictionary.Ok
-			} else if tnchid == dictionary.Assignment {
-				say.L1("", tnchlist, "\n")
-				if (len(tnchlist) == 2) {
-					op1, r1 := toFortran(tnchlist[0])
-					op2, r2 := toFortran(tnchlist[1])
-
-					if (r1 != dictionary.Ok) {
-						resCode = r1
-						return
-					}
-					if (r2 != dictionary.Ok) {
-						resCode = r2
-						return
-					}
-					Result += "\t" + op1 + " = " + op2 + "\n"
-					resCode = dictionary.Ok
-				} else {
-					resCode = dictionary.NotEnoughArguments
-				}
-			} else if (tnchid == dictionary.Addition) ||
-				(tnchid == dictionary.Substraction) ||
-				(tnchid == dictionary.Multiplication) ||
-				(tnchid == dictionary.Division) {
-					if (len(tnchlist) == 2) {
-						op1, r1 := toFortran(tnchlist[0])
-						op2, r2 := toFortran(tnchlist[1])
-
-						if (r1 != dictionary.Ok) {
-							resCode = r1
-							return
-						}
-						if (r2 != dictionary.Ok) {
-							resCode = r2
-							return
-						}
-						Result += "\t" + op1 + " " + tnchidnm + " " + op2 + "\n"
-						resCode = dictionary.Ok
-					} else {
-						resCode = dictionary.NotEnoughArguments
-					}
-			} else if (tnchid == dictionary.VariableId) ||
-				(tnchid == dictionary.Int) {
-				Result = tnchval
-				resCode = dictionary.Ok
-			} else if tnchid == dictionary.ExpressionInBrackets {
-				op, res := toFortran(tnchlist[1])
-				if (res == dictionary.Ok) {
-					Result += "(" + op + ")"
-				} else {
-					resCode = res
-				}
+	} else if tnid == dictionary.DontCompileTex {
+		for ttch := range tnlist {
+			op, res := toFortran(tnlist[ttch])
+			if (res == dictionary.Ok) {
+				Result += op
 			} else {
-				say.L3("There is no defined Fortran compiler rules for ["+tnchidnm+"]", "", "\n")
+				resCode = res
+				return
 			}
 		}
+		resCode = dictionary.Ok
+	} else if tnid == dictionary.Print {
+		Result += "\t" + "print*, "
+		for i := 1; i < len(tnlist)-1; i++ {
+			if (i != len(tnlist)-2) {
+				Result += tnlist[i].This.Value + ", "
+			} else {
+				Result += tnlist[i].This.Value
+			}
+		}
+		Result += "\n"
+		resCode = dictionary.Ok
+	} else if tnid == dictionary.Assignment {
+		if (len(tnlist) == 2) {
+			op1, r1 := toFortran(tnlist[0])
+			op2, r2 := toFortran(tnlist[1])
+
+			if (r1 != dictionary.Ok) {
+				resCode = r1
+				return
+			}
+			if (r2 != dictionary.Ok) {
+				resCode = r2
+				return
+			}
+			Result += "\t" + op1 + " = " + op2 + "\n"
+			resCode = dictionary.Ok
+		} else {
+			resCode = dictionary.NotEnoughArguments
+		}
+	} else if (tnid == dictionary.Addition) ||
+		(tnid == dictionary.Substraction) ||
+		(tnid == dictionary.Multiplication) ||
+		(tnid == dictionary.Division) {
+			if (len(tnlist) == 2) {
+				op1, r1 := toFortran(tnlist[0])
+				op2, r2 := toFortran(tnlist[1])
+
+				if (r1 != dictionary.Ok) {
+					resCode = r1
+					return
+				}
+				if (r2 != dictionary.Ok) {
+					resCode = r2
+					return
+				}
+				Result += "\t" + op1 + " " + tnidnm + " " + op2 + "\n"
+				resCode = dictionary.Ok
+			} else {
+				// TODO add cases to see wich argument is lost
+				resCode = dictionary.NotEnoughArguments
+			}
+	} else if (tnid == dictionary.VariableId) ||
+		(tnid == dictionary.Int) {
+		Result = tnval
+		resCode = dictionary.Ok
+	} else if tnid == dictionary.ExpressionInBrackets {
+		op, res := toFortran(tnlist[1])
+		if (res == dictionary.Ok) {
+			Result += "(" + op + ")"
+		} else {
+			resCode = res
+		}
+	} else if ((tnid == dictionary.LeftHS) || (tnid == dictionary.RightHS)) {
+		op, res := toFortran(tnlist[0])
+		if (res == dictionary.Ok) {
+			Result += op
+			resCode = dictionary.Ok
+		} else {
+			resCode = res
+		}
+	} else if (tnid == dictionary.Float) {
+		Result += tnval
+		resCode = dictionary.Ok
+	} else {
+		say.L3("There is no defined Fortran compiler rules for ["+tnidnm+"]", "", "\n")
 	}
 	return
 }
@@ -198,17 +218,17 @@ func toClang(SyntaxTree dictionary.TokenNode) (Result string) {
 		for ttch := range SyntaxTree.List {
 			Result += toClang(SyntaxTree.List[ttch])
 		}
-	} else if tnid == dictionary.Expression {
+	} else {
 		tnchid := tn.List[0].This.Id
 		chlist := tn.List[0].List
 		if (tnchid == dictionary.CarriageReturn) ||
 			(tnchid == dictionary.Space) ||
 			(tnchid == dictionary.CommentAll) ||
-			(tnchid == dictionary.CommentF90) {
+			(tnchid == dictionary.DontCompileF90) {
 			//------------//
 			// do nothing //
 			//------------//
-		} else if tnchid == dictionary.CommentTex {
+		} else if tnchid == dictionary.DontCompileTex {
 			for ttch := range tn.List[0].List {
 				Result += toClang(tn.List[0].List[ttch])
 			}
@@ -230,9 +250,7 @@ func ToFortran(SyntaxTree dictionary.TokenNode, Name [3]string) {
 	src, res := toFortran(reducedTree)
 	srcend := ""
 	if (res == dictionary.Ok) {
-		srcend = "program main\n" +
-			 src +
-			"end program main"
+		srcend = src
 	} else {
 		say.L1("", src, "\n")
 		say.L1("", dictionary.ErrorCodeDefinitions[res], "\n")
@@ -281,19 +299,8 @@ func ToClang(SyntaxTree dictionary.TokenNode, Name [3]string) {
 func ToLaTeX(SyntaxTree dictionary.TokenNode, Name [3]string) {
 	strnm := Name
 	say.L1("LaTeX compile: ", strnm[0], "\n")
-	srcnew := "\\documentclass[8pt]{article} \n" +
-		"\\usepackage{amsmath} \n" +
-		"\\allowdisplaybreaks\n" +
-		"\\begin{document} \n" +
-		"\\begin{equation} \n" +
-		"\\begin{aligned} \n" +
-		"&" + toLatex(SyntaxTree) +
-		"\\end{aligned} \n" +
-		"\\end{equation} \n" +
-		"\\end{document} \n"
-
 	if err := ioutil.WriteFile("./"+strnm[2]+"/"+strnm[0]+"/"+strnm[0]+".tex",
-		[]byte(srcnew), 0644); err != nil {
+		[]byte(toLatex(SyntaxTree)), 0644); err != nil {
 		say.L3("", err, "\n")
 	} else {
 		cmd := exec.Command("pdflatex", "-output-directory", "./"+strnm[2]+"/"+strnm[0]+"/",

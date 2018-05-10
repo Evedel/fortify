@@ -4,10 +4,6 @@ func TokenNodeProgram() TokenNode {
 	return TokenNode{Token{Program, "program", ""}, nil}
 }
 
-func TokenNodeExpression() TokenNode {
-	return TokenNode{Token{Expression, "expression", ""}, nil}
-}
-
 func TokenNodeSpace() TokenNode {
 	return TokenNode{Token{Space, "\" \"", " "}, nil}
 }
@@ -38,6 +34,10 @@ func TokenNodeAssignment() TokenNode {
 
 func TokenNodeOperand() TokenNode {
 	return TokenNode{Token{Operand, "operand", ""}, nil}
+}
+
+func TokenNodePrint() TokenNode {
+	return TokenNode{Token{Print, "print", ""}, nil}
 }
 
 func TokenNodeLeftHS() TokenNode {

@@ -2,6 +2,11 @@ Main idea -- write math, not code.
 Latex format.
 Compiled in pdf and fortran.
 
+Internal code notes
+---
+rule*
+always return index of the last element corresponding to that exact rule, __not__ the first element after  
+
 Comments
 ---
 `!` -- working code for tex, comment in f90 (not in scr.f90 at all)  

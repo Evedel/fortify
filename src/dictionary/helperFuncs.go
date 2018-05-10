@@ -26,17 +26,6 @@ func PrintSyntaxTree(TokenTree TokenNode, level string) {
 	}
 }
 
-func ExpressionTokenNode(ch []TokenNode) TokenNode {
-	return TokenNode{
-		Token{Expression, "expression", ""}, ch}
-}
-
-func ExpressionFromToken(t Token, ch []TokenNode) TokenNode {
-	return TokenNode{
-		Token{Expression, "expression", ""},
-		[]TokenNode{TokenNode{t, ch}}}
-}
-
 func ToVarIdTokenNode(t Token) TokenNode {
 	return TokenNode{Token{VariableId, "VarId", t.Value}, nil}
 }

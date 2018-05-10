@@ -1,12 +1,8 @@
 package dictionary
 
-// import(
-// 	"say"
+// import (
+//   "github.com/Evedel/fortify/src/say"
 // )
-
-import (
-  "github.com/Evedel/fortify/src/say"
-)
 
 func RuleExpression(ttail []Token) (resCode int, stopInd int, resNode TokenNode, errmsg string) {
 	thisName := "ruleExpression: "
@@ -16,7 +12,7 @@ func RuleExpression(ttail []Token) (resCode int, stopInd int, resNode TokenNode,
 	chindex := 0
 
 	for index < len(ttail) {
-		say.L2("Rule Expression: ", ttail[index], "\n")
+		// say.L0("Rule Expression: ", ttail[index], "\n")
 		tokenid := ttail[index].Id
 		tokenvalstr := ttail[index].Value
 		if tokenid == Space {
@@ -30,27 +26,26 @@ func RuleExpression(ttail []Token) (resCode int, stopInd int, resNode TokenNode,
 			resNode = TokenNodeReturn()
 			return
 		} else if tokenid == Print {
-			// resCode, chindex, chchilds, errmsg = rulePrint(ttail[index+1:])
-			stopInd = index + chindex + 1
-			// resNode = append([]TokenNode{}, TokenNode{ttail[index], chchilds})
+			resCode, chindex, resNode, errmsg = rulePrint(ttail[index:])
+			stopInd = index + chindex
 			return
-		} else if (tokenid == CommentTex) || (tokenid == CommentF90) {
-			// resCode, chindex, chchilds, errmsg = ruleCommentF90Tex(ttail[index+1:])
-			stopInd = index + chindex + 1
-			// resNode = append([]TokenNode{}, TokenNode{ttail[index], chchilds})
+		} else if (tokenid == DontCompileTex) || (tokenid == DontCompileF90) {
+			resCode, chindex, resNode, errmsg = ruleDontCompileF90Tex(ttail[index:])
+			stopInd = index + chindex
 			return
 		} else if tokenid == CommentAll {
-			resCode, chindex, resNode, errmsg = ruleCommentAll(ttail[index+1:])
-			stopInd = index + chindex + 1
+			resCode, chindex, resNode, errmsg = ruleCommentAll(ttail[index:])
+			stopInd = index + chindex
 			return
 		} else if tokenid == DeclarationVar {
-			resCode, chindex, resNode, errmsg = ruleDeclaration(ttail[index+1:])
-			stopInd = index + chindex + 1
+			resCode, chindex, resNode, errmsg = ruleDeclaration(ttail[index:])
+			stopInd = index + chindex
 			return
 		} else if tokenid == Word {
 			if _, ok := Variables[tokenvalstr]; ok {
 				resCode, chindex, resNode, errmsg = ruleAssignment(ttail[index:])
 				stopInd = index + chindex
+				// say.L0("Rule Assignment stopIndex: ", ttail[stopInd], "\n")
 				return
 			} else {
 				resCode = NotALanguageKeyWord

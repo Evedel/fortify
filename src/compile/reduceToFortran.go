@@ -12,7 +12,7 @@ func reduceToFortran(HeadToken dictionary.TokenNode) (newHeadToken dictionary.To
   if (HeadToken.This.Id == dictionary.Space) ||
       (HeadToken.This.Id == dictionary.CarriageReturn) ||
       (HeadToken.This.Id == dictionary.CommentAll) ||
-			(HeadToken.This.Id == dictionary.CommentF90) ||
+			(HeadToken.This.Id == dictionary.DontCompileF90) ||
       (HeadToken.This.Id == dictionary.DeclarationVar) {
         return
   } else {
