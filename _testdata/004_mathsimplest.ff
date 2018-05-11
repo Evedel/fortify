@@ -104,47 +104,6 @@ D{
 }
 
 D{
-  Math: brackets in simple operations
-}T{
-  var b
-  b = 2
-  b = (b + b) * b
-}L{
-  &\text{\textbf{var} }\text{b}\\
-  &\text{b}\text{ } = \text{ }\text{2}\\
-  &\text{b}\text{ } = \text{ }\text{(}\text{b}\text{ } + \text{ }\text{b}\text{)}\text{ } * \text{ }\text{b}\\
-  &\
-}F{
-  real(8) :: b
-	b = 2
-	b = (b + b) * b
-}
-
-D{
-  Math: missed open brackets
-}T{
-  var b
-  b = 2
-  b = b + b) * b
-}L{
-  MissedRoundBracketOpen
-}F{
-  MissedRoundBracketOpen
-}
-
-D{
-  Math: missed closed bracket
-}T{
-  var b
-  b = 2
-  b = (b + b * b
-}L{
-  MissedRoundBracketClose
-}F{
-  MissedRoundBracketClose
-}
-
-D{
   Math: simple operation without second arguments
 }T{
   var a b
@@ -164,6 +123,81 @@ D{
   a = 1
   b = 2
   a = + b
+}L{
+  NotEnoughArguments
+}F{
+  NotEnoughArguments
+}
+
+D{
+  Math: unitary negative operator
+}T{
+  var a
+  a = 1
+  a = -a
+}L{
+  &\text{\textbf{var} }\text{a}\\
+	&\text{a}\text{ } = \text{ }\text{1}\\
+	&\text{a}\text{ } = \text{ } - \text{a}\\
+	&\
+}F{
+  real(8) :: a
+  a = 1
+  a = -a
+}
+
+D{
+  Math: unitary negative operator close packet letters
+}T{
+  var a
+  a = 1
+  a=-a
+}L{
+  &\text{\textbf{var} }\text{a}\\
+  &\text{a}\text{ } = \text{ }\text{1}\\
+  &\text{a} =  - \text{a}\\
+  &\
+}F{
+  real(8) :: a
+	a = 1
+	a = -a
+}
+
+D{
+  Math: unitary negative at the wrong side
+}T{
+  var a
+  a = 1
+  a=a-
+}L{
+  NotEnoughArguments
+}F{
+  NotEnoughArguments
+}
+
+D{
+  Math: unitary negative operator in the expression
+}T{
+  var a
+  a = 1
+  a = a + - a
+}L{
+  &\text{\textbf{var} }\text{a}\\
+	&\text{a}\text{ } = \text{ }\text{1}\\
+	&\text{a}\text{ } = \text{ }\text{a}\text{ } + \text{ } - \text{ }\text{a}\\
+	&\
+}F{
+  real(8) :: a
+	a = 1
+	a = a + -a
+}
+
+D{
+  Math: binary operator used as unitary in the expression
+}T{
+  var a
+  a = -1
+  a = a + * a
 }L{
   NotEnoughArguments
 }F{

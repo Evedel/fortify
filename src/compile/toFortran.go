@@ -107,8 +107,23 @@ func toFortran(SyntaxTree dictionary.TokenNode) (Result string, resCode int) {
 				Result += op1 + " " + tnidnm + " " + op2
 				resCode = dictionary.Ok
 			} else {
-				// TODO add cases to see wich argument is lost
-				resCode = dictionary.NotEnoughArguments
+        if (tnid == dictionary.Substraction) &&
+        (len(tnlist) == 1) {
+          if tnlist[0].This.Id == dictionary.RightHS {
+            op1, r1 := toFortran(tnlist[0])
+            if r1 == dictionary.Ok {
+              Result += "-" + op1
+            }
+            resCode = r1
+            return
+          } else {
+            resCode = dictionary.NotEnoughArguments
+            return
+          }
+        } else {
+          resCode = dictionary.NotEnoughArguments
+          return
+        }
 			}
 	} else if (tnid == dictionary.VariableId) ||
 		(tnid == dictionary.Int) {

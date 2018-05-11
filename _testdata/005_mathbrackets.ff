@@ -1,0 +1,40 @@
+D{
+  Math: brackets in simple operations
+}T{
+  var b
+  b = 2
+  b = (b + b) * b
+}L{
+  &\text{\textbf{var} }\text{b}\\
+  &\text{b}\text{ } = \text{ }\text{2}\\
+  &\text{b}\text{ } = \text{ }\text{(}\text{b}\text{ } + \text{ }\text{b}\text{)}\text{ } * \text{ }\text{b}\\
+  &\
+}F{
+  real(8) :: b
+	b = 2
+	b = (b + b) * b
+}
+
+D{
+  Math: missed open brackets
+}T{
+  var b
+  b = 2
+  b = b + b) * b
+}L{
+  MissedRoundBracketOpen
+}F{
+  MissedRoundBracketOpen
+}
+
+D{
+  Math: missed closed bracket
+}T{
+  var b
+  b = 2
+  b = (b + b * b
+}L{
+  MissedRoundBracketClose
+}F{
+  MissedRoundBracketClose
+}

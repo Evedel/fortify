@@ -42,3 +42,14 @@ D{
 }F{
   NotALanguageKeyWord
 }
+
+D{
+  Var assignment: assignment without left hand side
+}T{
+  var c
+  c =
+}L{
+  NotEnoughArguments
+}F{
+  NotEnoughArguments
+}
