@@ -46,6 +46,9 @@ func TokenNodeLeftHS() TokenNode {
 func TokenNodeRightHS() TokenNode {
 	return TokenNode{Token{RightHS, "RightHS", ""}, nil}
 }
+func TokenNodeRoundBrackets() TokenNode {
+	return TokenNode{Token{RoundBrackets, "()", ""}, nil}
+}
 func TokenNodeRHS2LHS(t TokenNode) TokenNode {
 	return TokenNode{Token{LeftHS, "LeftHS", ""}, t.List}
 }

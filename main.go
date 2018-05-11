@@ -76,7 +76,7 @@ func main() {
 				tokenisedForm := lexer.Tokenise(source)
 				// say.L1("", tokenisedForm, "\n")
 				SyntaxTree, ok, emf := syntaxer.BuildTree(tokenisedForm)
-				// dictionary.PrintSyntaxTree(SyntaxTree, "")
+				dictionary.PrintSyntaxTree(SyntaxTree, "")
 				if ok == dictionary.Ok {
 					// dictionary.PrintSyntaxTree(SyntaxTree, "")
 					compile.ToLaTeX(SyntaxTree, sourceName)

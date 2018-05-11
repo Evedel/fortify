@@ -37,8 +37,3 @@ func roundBracketOpenTN() TokenNode {
 func roundBracketCloseTN() TokenNode {
 	return TokenNode{Token{RoundBracketOpen, ")", ")"}, nil}
 }
-
-func expressionInBracketsTN(ch []TokenNode) TokenNode {
-	return TokenNode{
-		Token{ExpressionInBrackets, "expression in brackets", ""}, ch}
-}

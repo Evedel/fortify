@@ -114,13 +114,18 @@ func toFortran(SyntaxTree dictionary.TokenNode) (Result string, resCode int) {
 		(tnid == dictionary.Int) {
 		Result = tnval
 		resCode = dictionary.Ok
-	} else if tnid == dictionary.ExpressionInBrackets {
-		op, res := toFortran(tnlist[1])
-		if (res == dictionary.Ok) {
-			Result += "(" + op + ")"
-		} else {
-			resCode = res
-		}
+	} else if tnid == dictionary.RoundBrackets {
+    if len(tnlist) != 1 {
+      resCode = dictionary.NotEnoughArguments
+      return
+    } else {
+      op, res := toFortran(tnlist[0])
+      if (res == dictionary.Ok) {
+        Result += "(" + op + ")"
+      }
+      resCode = res
+      return
+    }
 	} else if ((tnid == dictionary.LeftHS) || (tnid == dictionary.RightHS)) {
 		for ttch := range tnlist {
 			op, res := toFortran(tnlist[ttch])

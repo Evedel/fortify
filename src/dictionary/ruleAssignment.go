@@ -26,7 +26,7 @@ func ruleAssignment(ttail []Token) (resCode int, stopInd int, resNode TokenNode,
 			lhsNode.List = append(lhs)
 			resNode.List = append(resNode.List, lhsNode)
 			resCode, chStopIndx, rhs, errmsg = ruleOperand(ttail[index+1:])
-			stopInd = index + chStopIndx
+			stopInd = index+1 + chStopIndx
 			resNode.List = append(resNode.List, rhs)
 			return
 		} else if tokenid == CarriageReturn {

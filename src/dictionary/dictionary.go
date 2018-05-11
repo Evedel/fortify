@@ -3,13 +3,13 @@ package dictionary
 // all the possible words
 const (
 	// Internal tokens
-	None        = iota
-	Program    						= iota
-	ExpressionInBrackets 	= iota
-	VariableId = iota
-
-	RightHS = iota
-	LeftHS 	= iota
+	None        	= iota
+	Program    		= iota
+	VariableId 		= iota
+	// Expression tokens
+	RightHS 			= iota
+	LeftHS 				= iota
+	RoundBrackets = iota
 	Operand = iota
 	// Symbols
 	CarriageReturn 	= iota
